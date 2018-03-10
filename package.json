@@ -1,0 +1,22 @@
+{
+  "name": "markfast",
+  "version": "1.0.0",
+  "description": "A text editor built for Markdown",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Markfast/Markfast.git"
+  },
+  "keywords": [
+    "markdown"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Markfast/Markfast/issues"
+  },
+  "homepage": "https://github.com/Markfast/Markfast#readme"
+}
