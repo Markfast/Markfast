@@ -17,6 +17,16 @@
 
 ***
 
+### HTML Object
+* var tags = []
+  * Used to hold the surrounding tags
+* var innerHTML = ""
+  * String inside the object
+* getString = function ()
+  * Returns the innterHTML string, with the surrounding tags applied.
+
+***
+
 ### Install Packages
 
 `npm install`
