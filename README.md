@@ -14,3 +14,13 @@
 6. If reader is at the end of the inputMarkdown variable, go to step **8**. Else go back to step **7**
 7. Set sequence to empty string, and go to step **2**
 8. Return htmlString variable
+
+***
+
+### Install Packages
+
+`npm install`
+
+### Run Program
+
+`npm run electron`

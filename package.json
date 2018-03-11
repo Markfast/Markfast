@@ -4,7 +4,7 @@
   "description": "A text editor built for Markdown",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "electron": "electron ."
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/Markfast/Markfast/issues"
   },
-  "homepage": "https://github.com/Markfast/Markfast#readme"
+  "homepage": "https://github.com/Markfast/Markfast#readme",
+  "dependencies": {
+    "electron": "^1.8.3",
+    "electron-pane-window": "0.0.1"
+  }
 }
