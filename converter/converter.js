@@ -44,17 +44,55 @@ converter.convertToHTML = function(markdown) {
                 }
                 htmlElement = "<ul>";
                 for (index in bullets) {
-                    htmlElement += "<li>" + bullets[index].replace("-", "") + "</li>"
+                    htmlElement += "<li>" + this.convertEmphasis(bullets[index].replace("-", "")) + "</li>"
                 }
                 htmlElement += "</ul>"
                 this.appendHTMLElement(htmlElement);
                 break;
             default:
-                console.log("No Object");
+                this.appendHTMLElement(this.convertEmphasis(line));
         }
     }
 
 };
+
+converter.convertEmphasis = function (line) {
+    let htmlElement = "",
+        astrickBit = 0,
+        italicBit = 0;
+    for (let i = 0; i < line.length; i++) {
+        if (line[i] == "\\") {i++; continue;}
+        else if (line[i] == "*") {
+            if (i + 1 < line.length && line[i+1] == "*") {
+                i++;
+                astrickBit = (astrickBit + 1) % 2;
+                if (astrickBit == 1) htmlElement += "<b>"
+                else htmlElement += "</b>"
+            }
+            else {
+                italicBit = (italicBit + 1) % 2;
+                if (italicBit == 1) htmlElement += "<i>"
+                else htmlElement += "</i>"
+            }
+        }
+        else if (line[i] == "_") {
+            if (i + 1 < line.length && line[i+1] == "_") {
+                i++;
+                astrickBit = (astrickBit + 1) % 2;
+                if (astrickBit == 1) htmlElement += "<b>"
+                else htmlElement += "</b>"
+            }
+            else {
+                italicBit = (italicBit + 1) % 2;
+                if (italicBit == 1) htmlElement += "<i>"
+                else htmlElement += "</i>"
+            }
+        }
+        else htmlElement += line[i];
+    }
+    console.log(htmlElement);
+    return htmlElement
+}
 
 converter.isBullet = function (line) {
     for (let i = 0; i < line.length; i++) {
@@ -66,7 +104,8 @@ converter.isBullet = function (line) {
 
 converter.evaluateObject = function(line) {
     if (line[0] == "#") this.currentObject = this.OBJECT_HEADERS;
-    if (line[0] == "-") this.currentObject = this.OBJECT_UNORDEREDLIST;
+    else if (line[0] == "-") this.currentObject = this.OBJECT_UNORDEREDLIST;
+    else this.currentObject = 0;
 }
 
 converter.appendHTMLElement = function (htmlElement) {

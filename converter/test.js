@@ -1,3 +1,6 @@
+var testItalicBold = "Hello, this is a test for *italice* and **bold** with an astrick\n" +
+"and this is a test for _italice_ and __bold__ with a underscore\n";
+
 var testFileRaw = "" +
 "# GitHub Flavored Markdown" + "\n" +
 "- [Markdown Syntax](#markdown-syntax)" + "\n" +
