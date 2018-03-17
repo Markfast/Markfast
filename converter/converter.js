@@ -64,12 +64,27 @@ converter.convertToHTML = function(markdown) {
 
                     if (bullet["type"] == "ordered") {
                         htmlElement += "<ol>" + this.convertInLine(bullet["line"].replace(/\d./, "")) + "</ol>"
-                        console.log(htmlElement);
                     } else if (bullet["type"] == "unordered") {
                         htmlElement += "<li>" + this.convertInLine(bullet["line"].replace("-", "")) + "</li>"
                     }
                 }
                 htmlElement += "</ul>"
+                this.appendHTMLElement(htmlElement);
+                break;
+            case this.OBJECT_BLOCKQUOTES:
+                let blockquote = [line.replace(">", "")];
+                for (let nextLine = lineCounter + 1; nextLine < lines.length; nextLine++) {
+                    if (lines[nextLine] != "\n") {
+                        blockquote.push(lines[nextLine]);
+                        lineCounter++;
+                    }
+                    else break;
+                }
+                htmlElement = "<blockquote>"
+                for (let i = 0; i < blockquote.length; i++) {
+                    htmlElement += blockquote[i] + " ";
+                }
+                htmlElement += "</blockquote>"
                 this.appendHTMLElement(htmlElement);
                 break;
             default:
@@ -127,9 +142,11 @@ converter.getBulletType = function (line) {
 //=============================================================================
 
 converter.evaluateObject = function(line) {
+    console.log(line);
     if (line[0] == "#") this.currentObject = this.OBJECT_HEADERS;
     else if (line[0] == "-") this.currentObject = this.OBJECT_LIST;
     else if (line[0] == /^\d+$/) this.currentObject = this.OBJECT_LIST;
+    else if (/(\s*)(\>)(.*)/.test(line)) this.currentObject = this.OBJECT_BLOCKQUOTES;
     else this.currentObject = 0; //  && line[1] == "."
 }
 
