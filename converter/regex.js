@@ -1,3 +1,5 @@
+let regexBackslash = /(.*)(\\)(.*)/;
+let regexBackslashCheck = /(.*)(\\.)(.*)/;
 // Bold
 let regexBoldAstrick    = /(.*)(\*\*)(.+)(\*\*)(.*)/;
 let regexBoldUnderscore = /(.*)(\_\_)(.+)(\_\_)(.*)/;
@@ -9,6 +11,6 @@ let regexItalicUnderscore = /(.*)(\_)(.+)(\_)(.*)/;
 let regexItalicAstrickCheck    = /(.*)(\*\S)(.+)((\S)\*)(!\*)(.*)/;
 let regexItalicUnderscoreCheck = /(.*)(\_\S)(.+)((\S)\_)(!\_)(.*)/;
 // Links
-let regexLink = /(.*)(!\!\[)(.*)(\]\()(.*)(\))(.*)/
+let regexLink = /(.*)(!\!\[)(.*)(\]\()(.*)(\))(.*)/;
 // Images
-let regexImage = /(.*)(\!\[)(.*)(\]\()(.*)(\))(.*)/
+let regexImage = /(.*)(\!\[)(.*)(\]\()(.*)(\))(.*)/;

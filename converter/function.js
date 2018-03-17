@@ -5,3 +5,9 @@ String.prototype.count = function(char) {
     }
     return counter;
 }
+
+String.prototype.replaceAll = function(searchvalue, newvalue) {
+    let string = this;
+    while (string.includes(searchvalue)) string = string.replace(searchvalue, newvalue);
+    return string;
+}

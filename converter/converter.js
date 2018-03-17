@@ -84,6 +84,9 @@ converter.convertToHTML = function(markdown) {
 //=============================================================================
 converter.convertInLine = function (line) {
     let htmlElement = line;
+    while (regexBackslashCheck.test(htmlElement)) {
+        htmlElement = htmlElement.replace(regexBackslash, "$1U+0005C$3");
+    }
     while (regexBoldAstrickCheck.test(htmlElement)) {
         htmlElement = htmlElement.replace(regexBoldAstrick, "$1<b>$3</b>$5");
     }
