@@ -99,6 +99,9 @@ converter.convertInLine = function (line) {
     while (regexLink.test(htmlElement)) {
         htmlElement = htmlElement.replace(regexLink, "$1<a href=\"$5\">$3</a>$7");
     }
+    while (regexImage.test(htmlElement)) {
+        htmlElement = htmlElement.replace(regexImage, "$1<img src=\"$5\" alt=\"$3\">$7");
+    }
     return htmlElement
 }
 
