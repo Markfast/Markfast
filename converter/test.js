@@ -1,14 +1,11 @@
-var testItalicBold = "Hello, this is a test for *italice* and **bold** with an astrick\n" +
-"and this is a test for _italice_ and __bold__ with a underscore\n";
-
 var testFileRaw = "" +
 "# GitHub Flavored Markdown" + "\n" +
 "- [Markdown Syntax](#markdown-syntax)" + "\n" +
-"  - Headers" + "\n" +
-"  - Emphasis" + "\n" +
-"  - Lists" + "\n" +
-"  - Images" + "\n" +
-"  - Links" + "\n" +
+"  1. Headers" + "\n" +
+"  1. Emphasis" + "\n" +
+"  2. Lists" + "\n" +
+"  2. Images" + "\n" +
+"  3. Links" + "\n" +
 "  - Blockquotes" + "\n" +
 "  - Backslash Escapes" + "\n" +
 "- [GitHub Flavored Markdown](#github-flavored-markdown)" + "\n" +
@@ -91,4 +88,77 @@ var testFileRaw = "" +
 "    - \+ plus sign" + "\n" +
 "    - \- minus sigh \(hiphen\)" + "\n" +
 "    - \. dot" + "\n" +
-"    - \! exclamation mark" + "\n"
+"    - \! exclamation mark" + "\n";
+
+let boldTestAstrick = [
+    "**All Bold**",
+    "**This** should be **bold**.",
+    "**This ** should not work.",
+    "** This** should not work.",
+    "** This ** should not work."
+];
+let boldTestUnderscore = [
+    "__All Bold__",
+    "__This__ should be __bold__.",
+    "__This __ should not work.",
+    "__ This__ should not work.",
+    "__ This __ should not work."
+];
+let italicTestAstrick = [
+    "*All Italic*",
+    "*This* should be *italic*.",
+    "*This * should not work.",
+    "* This* should not work.",
+    "* This * should not work."
+];
+let italicTestUnderscore = [
+    "_All Italic_",
+    "_This_ should be _italic_.",
+    "_This _ should not work.",
+    "_ This_ should not work.",
+    "_ This _ should not work."
+];
+let boldAndItalicNestedWithAstricks = [
+    "*This sentence is in italics with **bold** nested **inside** of it using astricks*",
+    "**This sentence is in bold with *italics* nested *inside* of it using astricks**",
+    "***This** sentence is in italics with **bold** nested **inside** of it using astricks*",
+    "***This* sentence is in bold with *italics* nested *inside* of it using astricks**",
+    "*This sentence is in italics with **bold** nested **inside** of **it using astricks***",
+    "**This sentence is in bold with *italics* nested *inside* of *it using astricks***"
+];
+let boldAndItalicNestedWithUnderscore = [
+    "_This sentence is in italics with __bold__ nested __inside__ of it using underscores_",
+    "__This sentence is in bold with _italics_ nested _inside_ of it using underscores__",
+    "___This__ sentence is in italics with __bold__ nested __inside__ of it using underscores_",
+    "___This_ sentence is in bold with _italics_ nested _inside_ of it using underscores__",
+    "_This sentence is in italics with __bold__ nested __inside__ of __it using underscores___",
+    "__This sentence is in bold with _italics_ nested _inside_ of _it using underscores___"
+];
+let link = [
+    "Let's Go to [Github](https://github.com/) to learn!",
+    "Let's Go to []() to learn!",
+    "[Github](https://github.com/)"
+]
+
+function test(strings) {
+    converter.appendHTMLElement("Testing...");
+    for (let i = 0; i < strings.length; i++) {
+        let str = strings[i];
+        while (regexBoldAstrickCheck.test(str)) {
+            str = str.replace(regexBoldAstrick, "$1<b>$3</b>$5");
+        }
+        while (regexBoldUnderscoreCheck.test(str)) {
+            str = str.replace(regexBoldUnderscore, "$1<b>$3</b>$5");
+        }
+        while (regexItalicAstrickCheck.test(str)) {
+            str = str.replace(regexItalicAstrick, "$1<i>$3</i>$5");
+        }
+        while (regexItalicUnderscoreCheck.test(str)) {
+            str = str.replace(regexItalicUnderscore, "$1<i>$3</i>$5");
+        }
+        while (regexLink.test(str)) {
+            str = str.replace(regexLink, "$1<a href=\"$5\">$3</a>$7");
+        }
+        converter.appendHTMLElement(str);
+    }
+}
