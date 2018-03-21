@@ -1,7 +1,9 @@
 const KEYS = {
     B: 66,
+    BACKTICK: 192,
     ENTER: 13,
     I: 73,
+    QUOTE: 222,
     TAB: 9
 }
 
@@ -12,6 +14,10 @@ window.onload = function() {
     previewPane = document.getElementById('preview-pane');
 }
 
+/**
+ * Automatically sends contents of the modified editor pane to the converter to parse.
+ * Should be called every time the editor pane is modified.
+ */
 function onEdit() {
     console.log(editorPane.innerHTML);
     previewPane.innerHTML = '';
@@ -24,9 +30,9 @@ window.addEventListener('keydown', (e) => {
         e.preventDefault();
         insertAtCaret('\t');
     }
-    else if(focused === editorPane && e.keyCode == KEYS.ENTER) {
+    else if(focused === editorPane && e.keyCode == KEYS.BACKTICK) {
         e.preventDefault();
-        insertAtCaret('\n');
+        insertAroundCaret('`', '`');
     }
     else if(focused === editorPane && ((e.ctrlKey || e.metaKey) && e.keyCode == KEYS.B)) {
         e.preventDefault();
@@ -35,6 +41,14 @@ window.addEventListener('keydown', (e) => {
     else if(focused === editorPane && ((e.ctrlKey || e.metaKey) && e.keyCode == KEYS.I)) {
         e.preventDefault();
         insertAroundCaret('*', '*');
+    }
+    else if(focused === editorPane && (!(e.shiftKey) && e.keyCode == KEYS.QUOTE)) {
+        e.preventDefault();
+        insertAroundCaret("'", "'");
+    }
+    else if(focused === editorPane && (e.shiftKey && e.keyCode == KEYS.QUOTE)) {
+        e.preventDefault();
+        insertAroundCaret('"', '"');
     }
 }, false);
 
@@ -61,7 +75,6 @@ function insertAtCaret(text) {
  */
 function insertAroundCaret(startFence, endFence) {
     var sel = document.getSelection();
-    console.log(sel)
     var range = sel.getRangeAt(0);
     var sf = document.createTextNode(startFence);
     var ef = document.createTextNode(endFence);
@@ -71,6 +84,11 @@ function insertAroundCaret(startFence, endFence) {
     }
     range.insertNode(ef);
     range.setStartAfter(sf);
-    range.setEnd(ef, 0);
+    if(sel.type == 'Caret') {
+        range.setEnd(sf, 0);
+    }
+    else if(sel.type == 'Range') {
+        range.setEnd(ef, 0);
+    }
     sel.addRange(range);
 }
