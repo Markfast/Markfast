@@ -30,8 +30,12 @@
                 converter.convertToHTML(data);
             }
 
-            ipcRenderer.on('GET_EDITOR_CONTENTS', (event, callback) => {
+            ipcRenderer.on('GET_EDITOR_CONTENTS', (event) => {
                 ipcRenderer.send('GET_EDITOR_CONTENTS2', document.getElementById('editor-pane').innerHTML);
+            });
+
+            ipcRenderer.on('CLEAR_EDITOR', (event) => {
+                setEditorContents('');
             });
         </script>
     </body>

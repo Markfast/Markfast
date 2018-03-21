@@ -19,7 +19,8 @@ window.onload = function() {
 }
 
 function setEditorContents(con) {
-    editorPane.value = con;
+    editorPane.innerHTML = con;
+    onEdit();
 }
 
 /**
@@ -27,7 +28,6 @@ function setEditorContents(con) {
  * Should be called every time the editor pane is modified.
  */
 function onEdit() {
-    console.log(editorPane.innerHTML);
     previewPane.innerHTML = '';
     converter.convertToHTML(editorPane.innerHTML);
 }

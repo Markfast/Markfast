@@ -8,24 +8,40 @@ let mainWindow;
 let config = new Config();
 
 app.on('ready', () => {
-    // config.set('openfile', './test.md');
+    config.set('openfile', './test.md');
     mainWindow = new EditorWindow();
     let menu = Menu.buildFromTemplate(menuTemplate);
     mainWindow.setMenu(menu);
 });
 
+function newFile() {
+    mainWindow.webContents.send('CLEAR_EDITOR');
+    config.delete('openfile')
+}
+
 function openFile() {
 
 }
 
-function saveFile() {
-
-}
-
+/**
+ *
+ */
 function save() {
-
+    if(config.get('openfile') === undefined) {
+        saveAs();
+    }
+    else {
+        mainWindow.webContents.send('GET_EDITOR_CONTENTS');
+        ipcMain.once('GET_EDITOR_CONTENTS2', (event, con) => {
+            fs.writeFile(config.get('openfile'), con, (error) => {console.log(error)});
+        });
+    }
 }
 
+/**
+ * Saves a file using the save dialog.
+ * Expected behavior of the "Save As" menu item.
+ */
 function saveAs() {
     dialog.showSaveDialog({
         filters: [
@@ -33,6 +49,7 @@ function saveAs() {
         ]
     }, filename => {
         if(filename === undefined) return;
+        config.set('openfile', filename);
         mainWindow.webContents.send('GET_EDITOR_CONTENTS');
         ipcMain.once('GET_EDITOR_CONTENTS2', (event, con) => {
             fs.writeFile(filename, con, (error) => {console.log(error)});
@@ -47,7 +64,7 @@ const menuTemplate = [
             {
                 label: 'New',
                 accelerator: 'CommandOrControl+N',
-                click() {console.log('New');}
+                click() {newFile();}
             },
             {
                 label: 'Open',
@@ -58,7 +75,7 @@ const menuTemplate = [
             {
                 label: 'Save',
                 accelerator: 'CommandOrControl+S',
-                click() {console.log('Save');}
+                click() {save();}
             },
             {
                 label: 'Save As...',
