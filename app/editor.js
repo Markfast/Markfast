@@ -18,6 +18,10 @@ window.onload = function() {
     editorPane.addEventListener('input', onEdit);
 }
 
+function setEditorContents(con) {
+    editorPane.value = con;
+}
+
 /**
  * Automatically sends contents of the modified editor pane to the converter to parse.
  * Should be called every time the editor pane is modified.

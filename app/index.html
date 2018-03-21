@@ -13,5 +13,17 @@
         <div id="directory-pane" class="col"></div>
         <div id="editor-pane" contenteditable="true" class="col" tabindex="-1"></div>
         <div id="preview-pane" class="col"></div>
+
+        <script>
+            const electron = require('electron');
+            const fs = require('fs');
+            const Config = require('electron-config');
+            let config = new Config();
+
+            var data = fs.readFileSync(config.get('openfile')).toString();
+            document.getElementById('editor-pane').innerHTML = data;
+            converter.convertToHTML(data);
+            // onEdit();
+        </script>
     </body>
 </html>
