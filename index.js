@@ -1,12 +1,9 @@
 const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const {app} = electron;
+const EditorWindow = require('./app/EditorWindow');
 
 let mainWindow;
 
 app.on('ready', () => {
-    mainWindow = new BrowserWindow({
-        darkTheme: true
-    });
-    mainWindow.loadURL(`file://${__dirname}/index.html`);
+    mainWindow = new EditorWindow('hello');
 });

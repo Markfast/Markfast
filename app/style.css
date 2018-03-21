@@ -32,3 +32,10 @@
 #editor-pane:read-write:focus {
      outline: none;
 }
+
+#preview-pane {
+    padding: 20px;
+    font-size: 125%;
+    color: white;
+    font-family: sans-serif;
+}

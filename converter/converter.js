@@ -151,6 +151,6 @@ converter.evaluateObject = function(line) {
 }
 
 converter.appendHTMLElement = function (htmlElement) {
-    document.getElementById("test").innerHTML += htmlElement + "<br />";
+    document.getElementById("preview-pane").innerHTML += htmlElement + "<br />";
     this.currentObject = 0;
 }

@@ -4,10 +4,14 @@
         <meta charset="utf-8">
         <title>Markfast</title>
         <link rel="stylesheet" href="./style.css"/>
+        <script src="./editor.js"></script>
+        <script src="../converter/function.js"></script>
+        <script src="../converter/regex.js"></script>
+        <script src="../converter/converter.js"></script>
     </head>
     <body class="row">
         <div id="directory-pane" class="col"></div>
-        <div id="editor-pane" contenteditable="true" class="col"></div>
+        <div id="editor-pane" contenteditable="true" class="col" oninput="onEdit();"></div>
         <div id="preview-pane" class="col"></div>
     </body>
 </html>
