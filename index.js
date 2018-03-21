@@ -14,17 +14,38 @@ app.on('ready', () => {
     mainWindow.setMenu(menu);
 });
 
+/**
+ * Sets the editor to a new, empty file.
+ * Clears editor and removes current file from config.
+ */
 function newFile() {
     mainWindow.webContents.send('CLEAR_EDITOR');
     config.delete('openfile')
 }
 
+/**
+ * Opens a file using the open dialog.
+ * Expected behavior of the "Open" menu item / Ctrl+O accelerator.
+ */
 function openFile() {
-
+    dialog.showOpenDialog({
+        filters: [
+            {name: 'Markdown', extensions: ['md', 'markdown', 'markdn', 'mdown']},
+            {name: 'Text', extensions: ['txt']},
+            {name: 'All Files', extensions: ['*']}
+        ]
+    }, filenames => {
+        if(filenames === undefined) return;
+        config.set('openfile', filenames[0]);
+        let content = fs.readFile(filenames[0], 'utf-8', (err, data) => {
+            mainWindow.webContents.send('SET_EDITOR_CONTENTS', data);
+        })
+    });
 }
 
 /**
- *
+ * Saves a file without the dialog if it has a filename, with the dialog otherwise.
+ * Expected behavior of the "Save" menu item / Ctrl+S accelerator.
  */
 function save() {
     if(config.get('openfile') === undefined) {
@@ -40,12 +61,14 @@ function save() {
 
 /**
  * Saves a file using the save dialog.
- * Expected behavior of the "Save As" menu item.
+ * Expected behavior of the "Save As" menu item / Ctrl+Shift+S accelerator.
  */
 function saveAs() {
     dialog.showSaveDialog({
         filters: [
-            {name: 'Markdown', extensions: ['md', 'markdown', 'markdn', 'mdown']}
+            {name: 'Markdown', extensions: ['md', 'markdown', 'markdn', 'mdown']},
+            {name: 'Text', extensions: ['txt']},
+            {name: 'All Files', extensions: ['*']}
         ]
     }, filename => {
         if(filename === undefined) return;
@@ -69,7 +92,7 @@ const menuTemplate = [
             {
                 label: 'Open',
                 accelerator: 'CommandOrControl+O',
-                click() {console.log('Open');}
+                click() {openFile();}
             },
             {type: 'separator'},
             {

@@ -37,6 +37,10 @@
             ipcRenderer.on('CLEAR_EDITOR', (event) => {
                 setEditorContents('');
             });
+
+            ipcRenderer.on('SET_EDITOR_CONTENTS', (event, data) => {
+                setEditorContents(data);
+            })
         </script>
     </body>
 </html>
