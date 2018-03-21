@@ -3,6 +3,8 @@ const KEYS = {
     BACKTICK: 192,
     ENTER: 13,
     I: 73,
+    LEFT_BRACKET: 219,
+    LEFT_PARENTHESIS: 57,
     QUOTE: 222,
     TAB: 9
 }
@@ -12,6 +14,8 @@ let directoryPane, editorPane, previewPane;
 window.onload = function() {
     editorPane = document.getElementById('editor-pane');
     previewPane = document.getElementById('preview-pane');
+
+    editorPane.addEventListener('input', onEdit);
 }
 
 /**
@@ -50,6 +54,19 @@ window.addEventListener('keydown', (e) => {
         e.preventDefault();
         insertAroundCaret('"', '"');
     }
+    else if(focused === editorPane && (e.shiftKey && e.keyCode == KEYS.LEFT_BRACKET)) {
+        e.preventDefault();
+        insertAroundCaret('{', '}');
+    }
+    else if(focused === editorPane && (!(e.shiftKey) && e.keyCode == KEYS.LEFT_BRACKET)) {
+        e.preventDefault();
+        insertAroundCaret('[', ']');
+    }
+    else if(focused === editorPane && (e.shiftKey && e.keyCode == KEYS.LEFT_PARENTHESIS)) {
+        e.preventDefault();
+        insertAroundCaret('(', ')');
+    }
+    onEdit();
 }, false);
 
 /**
@@ -78,16 +95,17 @@ function insertAroundCaret(startFence, endFence) {
     var range = sel.getRangeAt(0);
     var sf = document.createTextNode(startFence);
     var ef = document.createTextNode(endFence);
-    range.insertNode(sf);
-    if(sel.type == 'Range') {
-        range.collapse(false); // false collapses to end of range, true collapses to beginning
-    }
-    range.insertNode(ef);
-    range.setStartAfter(sf);
     if(sel.type == 'Caret') {
-        range.setEnd(sf, 0);
+        range.insertNode(ef);
+        range.insertNode(sf);
+        range.setStartAfter(sf);
+        range.setEnd(sf, sf.length);
     }
-    else if(sel.type == 'Range') {
+    if(sel.type == 'Range') {
+        range.insertNode(sf);
+        range.collapse(false); // false collapses to end of range, true collapses to beginning
+        range.insertNode(ef);
+        range.setStartAfter(ef);
         range.setEnd(ef, 0);
     }
     sel.addRange(range);
