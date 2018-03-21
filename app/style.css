@@ -27,6 +27,7 @@
     font-size: 125%;
     color: white;
     font-family: monospace;
+    white-space: pre-wrap;
 }
 
 #editor-pane:read-write:focus {
