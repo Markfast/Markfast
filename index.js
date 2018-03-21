@@ -5,6 +5,8 @@ const BrowserWindow = electron.BrowserWindow;
 let mainWindow;
 
 app.on('ready', () => {
-    mainWindow = new BrowserWindow({});
+    mainWindow = new BrowserWindow({
+        darkTheme: true
+    });
     mainWindow.loadURL(`file://${__dirname}/index.html`);
 });
