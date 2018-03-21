@@ -19,6 +19,7 @@
             // document.getElementById('editor-pane').style.width = '50%';
             // document.getElementById('preview-pane').style.width = '35%';
             const electron = require('electron');
+            const {ipcRenderer} = electron;
             const fs = require('fs');
             const Config = require('electron-config');
             let config = new Config();
@@ -28,6 +29,10 @@
                 document.getElementById('editor-pane').innerHTML = data;
                 converter.convertToHTML(data);
             }
+
+            ipcRenderer.on('GET_EDITOR_CONTENTS', (event, callback) => {
+                ipcRenderer.send('GET_EDITOR_CONTENTS2', document.getElementById('editor-pane').innerHTML);
+            });
         </script>
     </body>
 </html>

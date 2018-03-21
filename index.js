@@ -1,5 +1,5 @@
 const electron = require('electron');
-const {app, Menu} = electron;
+const {app, Menu, dialog, ipcMain} = electron;
 const Config = require('electron-config');
 const fs = require('fs');
 const EditorWindow = require('./app/EditorWindow');
@@ -11,8 +11,34 @@ app.on('ready', () => {
     // config.set('openfile', './test.md');
     mainWindow = new EditorWindow();
     let menu = Menu.buildFromTemplate(menuTemplate);
-    Menu.setApplicationMenu(menu);
+    mainWindow.setMenu(menu);
 });
+
+function openFile() {
+
+}
+
+function saveFile() {
+
+}
+
+function save() {
+
+}
+
+function saveAs() {
+    dialog.showSaveDialog({
+        filters: [
+            {name: 'Markdown', extensions: ['md', 'markdown', 'markdn', 'mdown']}
+        ]
+    }, filename => {
+        if(filename === undefined) return;
+        mainWindow.webContents.send('GET_EDITOR_CONTENTS');
+        ipcMain.once('GET_EDITOR_CONTENTS2', (event, con) => {
+            fs.writeFile(filename, con, (error) => {console.log(error)});
+        })
+    });
+}
 
 const menuTemplate = [
     {
@@ -37,7 +63,7 @@ const menuTemplate = [
             {
                 label: 'Save As...',
                 accelerator: 'CommandOrControl+Shift+S',
-                click() {console.log('Save As...');}
+                click() {saveAs();}
             }
         ]
     },
