@@ -15,15 +15,19 @@
         <div id="preview-pane" class="col"></div>
 
         <script>
+            // document.getElementById('directory-pane').style.width = '15%';
+            // document.getElementById('editor-pane').style.width = '50%';
+            // document.getElementById('preview-pane').style.width = '35%';
             const electron = require('electron');
             const fs = require('fs');
             const Config = require('electron-config');
             let config = new Config();
 
-            var data = fs.readFileSync(config.get('openfile')).toString();
-            document.getElementById('editor-pane').innerHTML = data;
-            converter.convertToHTML(data);
-            // onEdit();
+            if(config.get('openfile') !== undefined) {
+                var data = fs.readFileSync(config.get('openfile')).toString();
+                document.getElementById('editor-pane').innerHTML = data;
+                converter.convertToHTML(data);
+            }
         </script>
     </body>
 </html>
