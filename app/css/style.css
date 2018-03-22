@@ -38,6 +38,19 @@
     font-size: 110%;
 }
 
+code {
+    display: inline;
+    font-family: 'Inconsolata', monospace !important;
+}
+
+table, tr, th, td {
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px;
+}
+
 /* SIDE-BY-SIDE MAGIC */
 .row {
     display: table;

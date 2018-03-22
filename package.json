@@ -17,8 +17,8 @@
     "electron": "electron ."
   },
   "build": {
-      "appId": "edu.okstate.cs.markfast",
-      "app-category-type": "public.app-category.developer-tools"
+    "appId": "edu.okstate.cs.markfast",
+    "app-category-type": "public.app-category.developer-tools"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,8 @@
   "homepage": "https://github.com/Markfast/Markfast#readme",
   "dependencies": {
     "electron": "^1.8.3",
-    "electron-config": "^1.0.0"
+    "electron-config": "^1.0.0",
+    "prismjs": "^1.13.0"
   },
   "devDependencies": {
     "electron-builder": "^20.6.2"

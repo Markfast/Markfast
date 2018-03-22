@@ -5,32 +5,67 @@
         <title>About Markdown</title>
         <link href="./css/style.css" rel="stylesheet"/>
     </head>
-    <body>
+    <body style="font-size: smaller;">
         <script>
-        const electron = require('electron');
-        const {ipcRenderer} = electron;
-        const Config = require('electron-config');
-        let config = new Config();
+            const electron = require('electron');
+            const {ipcRenderer} = electron;
+            const Config = require('electron-config');
+            let config = new Config();
 
-        changeTheme(config.get('theme'));
+            changeTheme(config.get('theme'));
 
-        ipcRenderer.on('SWAP_THEME', (event, theme) => {
-            changeTheme(theme);
-        });
+            ipcRenderer.on('SWAP_THEME', (event, theme) => {
+                changeTheme(theme);
+            });
 
-        function changeTheme(theme) {
-            console.log('swap', theme);
-            if(document.getElementById('theme')) {
-                document.head.removeChild(document.getElementById('theme'));
+            function changeTheme(theme) {
+                console.log('swap', theme);
+                if(document.getElementById('theme')) {
+                    document.head.removeChild(document.getElementById('theme'));
+                }
+                let newTheme = document.createElement('link');
+                newTheme.id = 'theme';
+                newTheme.rel = 'stylesheet';
+                newTheme.href = `./css/theme_${theme}.css`;
+                document.head.appendChild(newTheme);
             }
-            let newTheme = document.createElement('link');
-            newTheme.id = 'theme';
-            newTheme.rel = 'stylesheet';
-            newTheme.href = `./css/theme_${theme}.css`;
-            document.head.appendChild(newTheme);
-        }
         </script>
 
         <center><h1>Your Guide to Markdown</h1></center>
+        <div><center>
+            <a href="https://daringfireball.net/projects/markdown/" title="The official website of the Markdown language">Markdown</a>
+            is a markup language designed to be legible and easy to convert to HTML.
+            The Markfast editor is currently using the <a href="http://spec.commonmark.org/0.28/" title="CommonMark Spec Version 0.28">CommonMark Spec v0.28</a>.
+            The following is a guide to Markdown's syntax.
+        </center></div>
+        <hr/>
+        <h2 id="inline-html">Inline HTML</h2>
+        <div>
+            Inline HTML tags are parsed as HTML, meaning they can be used to structure a Markdown document.
+            For instance, to format some text as inline code, you could use Markdown's native method of
+            placing a backtick at each end of the inline code, or you could wrap the inline code in <code>&lt;code&gt;</code> tags.
+        </div>
+        <table style="width: 100%; font-size: smaller;">
+            <tr>
+                <th>Markdown</th>
+                <th>Presentation</th>
+                <th>Hotkeys</th>
+            </tr>
+            <tr>
+                <td><pre><code class="lang-md">`Inline code`</td>
+                <td><code>Inline code</code></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><pre><code class="lang-html">&lt;code&gt;Inline code&lt;/code&gt;</td>
+                <td><code>Inline code</code></td>
+                <td></td>
+            </tr>
+        </table>
+        <hr/>
+        <h2>Headers</h2>
+        <table style="width: 100%;">
+
+        </table>
     </body>
 </html>

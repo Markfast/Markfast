@@ -22,8 +22,21 @@ class EditorWindow extends BrowserWindow {
         this.loadURL(`file://${__dirname}/index.html`);
 
         this.on('ready-to-show', () => {
-            this.maximize();
-        })
+            if(config.get('editor-width') === undefined) {
+                this.maximize();
+                config.set('editor-width', this.getSize()[0]);
+                config.set('editor-height', this.getSize()[1]);
+            }
+            else {
+                this.setSize(config.get('editor-width'), config.get('editor-height'), false)
+                this.show();
+            }
+        });
+
+        this.on('resize', () => {
+            config.set('editor-width', this.getSize()[0]);
+            config.set('editor-height', this.getSize()[1]);
+        });
     }
 }
 
