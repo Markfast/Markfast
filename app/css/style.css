@@ -2,35 +2,40 @@
 @font-face {
     font-family: 'Inconsolata';
     font-style: 'normal';
-    src: local('Inconsolata'), url('../resources/Inconsolata-Regular.ttf');
+    src: local('Inconsolata'), url('../../resources/Inconsolata-Regular.ttf');
 }
 
 @font-face {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: normal;
-    src: local('Open Sans'), url('../resources/OpenSans-Regular.ttf');
+    src: local('Open Sans'), url('../../resources/OpenSans-Regular.ttf');
 }
 
 @font-face {
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: normal;
-    src: local('Open Sans'), url('../resources/OpenSans-Italic.ttf');
+    src: local('Open Sans'), url('../../resources/OpenSans-Italic.ttf');
 }
 
 @font-face {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: bold;
-    src: local('Open Sans'), url('../resources/OpenSans-Bold.ttf');
+    src: local('Open Sans'), url('../../resources/OpenSans-Bold.ttf');
 }
 
 @font-face {
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: bold;
-    src: local('Open Sans'), url('../resources/OpenSans-BoldItalic.ttf');
+    src: local('Open Sans'), url('../../resources/OpenSans-BoldItalic.ttf');
+}
+
+* {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 110%;
 }
 
 /* SIDE-BY-SIDE MAGIC */
@@ -38,7 +43,6 @@
     display: table;
     width: 100%;
     table-layout: fixed;
-    background-color: #222;
     padding: 0px;
     margin: 0px;
 }
@@ -63,11 +67,8 @@
 
 #editor-pane {
     padding-left: 20px;
-    font-size: 125% !important;
-    color: #bbb !important;
     font-family: 'Inconsolata', monospace !important;
     white-space: pre-wrap;
-    text-shadow: 1px 1px 1px #bbb !important;
 }
 
 #editor-pane:read-write:focus {
@@ -78,10 +79,7 @@
 
 #preview-pane {
     padding-left: 20px;
-    font-size: 125%;
-    color: #bbb;
     font-family: 'Open Sans', sans-serif;
-    text-shadow: 1px 1px 1px #bbb;
 }
 
 #preview-pane h1 {

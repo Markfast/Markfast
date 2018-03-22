@@ -11,8 +11,6 @@ const KEYS = {
 
 let directoryPane, editorPane, previewPane;
 
-document.undoStack = [];
-
 window.onload = function() {
     editorPane = document.getElementById('editor-pane');
     previewPane = document.getElementById('preview-pane');
@@ -36,52 +34,51 @@ function setEditorContents(con) {
  * Should be called every time the editor pane is modified.
  */
 function onEdit() {
-    document.undoStack.push(editorPane.innerHTML);
     previewPane.innerHTML = '';
     converter.convertToHTML(editorPane.innerHTML);
 }
 
 window.addEventListener('keydown', (e) => {
     let focused = document.querySelector(':focus');
-    console.log(focused);
-    if(focused === editorPane && e.keyCode == KEYS.TAB) {
-        e.preventDefault();
-        insertAtCaret('\t', false);
+    if(focused === editorPane) {
+        if(e.keyCode == KEYS.TAB) {
+            e.preventDefault();
+            insertAtCaret('\t', false);
+        }
+        else if(e.keyCode == KEYS.BACKTICK) {
+            e.preventDefault();
+            insertAroundCaret('`', '`');
+        }
+        else if((e.ctrlKey || e.metaKey) && e.keyCode == KEYS.B) {
+            e.preventDefault();
+            insertAroundCaret('**', '**');
+        }
+        else if((e.ctrlKey || e.metaKey) && e.keyCode == KEYS.I) {
+            e.preventDefault();
+            insertAroundCaret('*', '*');
+        }
+        else if(!(e.shiftKey) && e.keyCode == KEYS.QUOTE) {
+            e.preventDefault();
+            insertAroundCaret("'", "'");
+        }
+        else if(e.shiftKey && e.keyCode == KEYS.QUOTE) {
+            e.preventDefault();
+            insertAroundCaret('"', '"');
+        }
+        else if(e.shiftKey && e.keyCode == KEYS.LEFT_BRACKET) {
+            e.preventDefault();
+            insertAroundCaret('{', '}');
+        }
+        else if(!(e.shiftKey) && e.keyCode == KEYS.LEFT_BRACKET) {
+            e.preventDefault();
+            insertAroundCaret('[', ']');
+        }
+        else if(e.shiftKey && e.keyCode == KEYS.LEFT_PARENTHESIS) {
+            e.preventDefault();
+            insertAroundCaret('(', ')');
+        }
+        onEdit();
     }
-    else if(focused === editorPane && e.keyCode == KEYS.BACKTICK) {
-        e.preventDefault();
-        insertAroundCaret('`', '`');
-    }
-    else if(focused === editorPane && ((e.ctrlKey || e.metaKey) && e.keyCode == KEYS.B)) {
-        e.preventDefault();
-        insertAroundCaret('**', '**');
-    }
-    else if(focused === editorPane && ((e.ctrlKey || e.metaKey) && e.keyCode == KEYS.I)) {
-        e.preventDefault();
-        insertAroundCaret('*', '*');
-    }
-    else if(focused === editorPane && (!(e.shiftKey) && e.keyCode == KEYS.QUOTE)) {
-        e.preventDefault();
-        insertAroundCaret("'", "'");
-    }
-    else if(focused === editorPane && (e.shiftKey && e.keyCode == KEYS.QUOTE)) {
-        e.preventDefault();
-        insertAroundCaret('"', '"');
-    }
-    else if(focused === editorPane && (e.shiftKey && e.keyCode == KEYS.LEFT_BRACKET)) {
-        e.preventDefault();
-        insertAroundCaret('{', '}');
-    }
-    else if(focused === editorPane && (!(e.shiftKey) && e.keyCode == KEYS.LEFT_BRACKET)) {
-        e.preventDefault();
-        insertAroundCaret('[', ']');
-    }
-    else if(focused === editorPane && (e.shiftKey && e.keyCode == KEYS.LEFT_PARENTHESIS)) {
-        e.preventDefault();
-        insertAroundCaret('(', ')');
-    }
-    if(focused === editorPane) {onEdit();}
-
 }, false);
 
 /**
@@ -130,6 +127,11 @@ function insertAroundCaret(startFence, endFence) {
     sel.addRange(range);
 }
 
+/**
+ * Pastes clipboard contents as plain text into the editor.
+ * Ignores pasting data that contains files.
+ * @param {Event} e - Paste event
+ */
 function onPaste(e) {
     e.preventDefault();
     if(e.clipboardData.types.includes('Files')) {return;}

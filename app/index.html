@@ -3,7 +3,8 @@
     <head>
         <meta charset="utf-8">
         <title>Markfast</title>
-        <link rel="stylesheet" href="./style.css"/>
+        <link rel="stylesheet" href="./css/style.css"/>
+        <link rel="stylesheet" href="./css/theme_DARK.css" id="theme">
         <script src="./editor.js"></script>
         <script src="../converter/function.js"></script>
         <script src="../converter/regex.js"></script>
@@ -23,6 +24,7 @@
             const fs = require('fs');
             const Config = require('electron-config');
             let config = new Config();
+            changeTheme(config.get('theme'));
 
             if(config.get('openfile') !== undefined) {
                 var data = fs.readFileSync(config.get('openfile')).toString();
@@ -36,7 +38,22 @@
 
             ipcRenderer.on('SET_EDITOR_CONTENTS', (event, data) => {
                 setEditorContents(data);
-            })
+            });
+
+            ipcRenderer.on('SWAP_THEME', (event, theme) => {
+                changeTheme(theme);
+            });
+
+            function changeTheme(theme) {
+                if(document.getElementById('theme')) {
+                    document.head.removeChild(document.getElementById('theme'));
+                }
+                let newTheme = document.createElement('link');
+                newTheme.id = 'theme';
+                newTheme.rel = 'stylesheet';
+                newTheme.href = `./css/theme_${theme}.css`;
+                document.head.appendChild(newTheme);
+            }
         </script>
     </body>
 </html>

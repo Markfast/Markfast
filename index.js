@@ -3,12 +3,19 @@ const {app, Menu, dialog, ipcMain} = electron;
 const Config = require('electron-config');
 const fs = require('fs');
 const EditorWindow = require('./app/EditorWindow');
+const MarkdownGuideWindow = require('./app/MarkdownGuideWindow');
 
-let mainWindow;
+let mainWindow, markdownGuide;
+let windows = [];
 let config = new Config();
 
 app.on('ready', () => {
+    if(config.get('theme') === undefined) {
+        config.set('theme', 'DARK');
+    }
     mainWindow = new EditorWindow();
+    windows.push(mainWindow);
+    swapTheme(config.get('theme'))
     let menu = Menu.buildFromTemplate(menuTemplate);
     mainWindow.setMenu(menu);
 });
@@ -79,6 +86,34 @@ function saveAs() {
     });
 }
 
+/**
+ * Determines whether a theme is the current theme.
+ * Used to set the initial radio selection for the theme menu from config.
+ * @param {string} id - The theme ID (an ID of `FOO` will use the `theme_FOO` CSS file).
+ * @returns {boolean} Whether the given ID matches the theme config.
+ */
+function isTheme(id) {
+    return id == config.get('theme');
+}
+
+/**
+ * Alerts all active windows to change their theme.
+ * Also sets the theme in config.
+ * @param {string} id - The theme ID to switch to (an ID of `FOO` will use the `theme_FOO` CSS file).
+ */
+function swapTheme(id) {
+    config.set('theme', id);
+    windows.forEach(win => {
+        win.webContents.send('SWAP_THEME', id);
+    })
+}
+
+function openMarkdownGuide() {
+    markdownGuide = new MarkdownGuideWindow();
+    markdownGuide.setMenu(null);
+    windows.push(markdownGuide);
+}
+
 const menuTemplate = [
     {
         label: 'File',
@@ -129,6 +164,25 @@ const menuTemplate = [
             click() {mainWindow.webContents.toggleDevTools();}
         },
         {type: 'separator'},
+        {
+            label: 'Theme',
+            submenu: [
+                {
+                    label: 'Dark',
+                    id: 'DARK',
+                    type: 'radio',
+                    checked: isTheme('DARK'),
+                    click() {swapTheme('DARK');}
+                },
+                {
+                    label: 'Light',
+                    id: 'LIGHT',
+                    type: 'radio',
+                    checked: isTheme('LIGHT'),
+                    click() {swapTheme('LIGHT');}
+                }
+            ]
+        },
         {role: 'resetzoom'},
         {role: 'zoomin'},
         {role: 'zoomout'},
@@ -139,7 +193,12 @@ const menuTemplate = [
     {
         label: 'Help',
         submenu: [
-            {role: 'about'}
+            {role: 'about'},
+            {
+                label: 'Markdown Guide',
+                accelerator: 'F1',
+                click() {openMarkdownGuide();}
+            }
         ]
     }
 ]

@@ -1,0 +1,12 @@
+body {
+    background-color: #eee;
+}
+
+.row {
+    background-color: #eee;
+}
+
+* {
+    color: #666;
+    text-shadow: 1px 1px 1px #666;
+}
