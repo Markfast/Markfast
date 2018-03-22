@@ -11,11 +11,14 @@ const KEYS = {
 
 let directoryPane, editorPane, previewPane;
 
+document.undoStack = [];
+
 window.onload = function() {
     editorPane = document.getElementById('editor-pane');
     previewPane = document.getElementById('preview-pane');
 
     editorPane.addEventListener('input', onEdit);
+    editorPane.addEventListener('paste', onPaste);
 }
 
 /**
@@ -33,15 +36,17 @@ function setEditorContents(con) {
  * Should be called every time the editor pane is modified.
  */
 function onEdit() {
+    document.undoStack.push(editorPane.innerHTML);
     previewPane.innerHTML = '';
     converter.convertToHTML(editorPane.innerHTML);
 }
 
 window.addEventListener('keydown', (e) => {
     let focused = document.querySelector(':focus');
+    console.log(focused);
     if(focused === editorPane && e.keyCode == KEYS.TAB) {
         e.preventDefault();
-        insertAtCaret('\t');
+        insertAtCaret('\t', false);
     }
     else if(focused === editorPane && e.keyCode == KEYS.BACKTICK) {
         e.preventDefault();
@@ -75,18 +80,23 @@ window.addEventListener('keydown', (e) => {
         e.preventDefault();
         insertAroundCaret('(', ')');
     }
-    onEdit();
+    if(focused === editorPane) {onEdit();}
+
 }, false);
 
 /**
  * Inserts a given string at the cursor.
  * If the selection is a range, the insertion takes place before the range.
  * @param {string} text - The string to be inserted at the cursor.
+ * @param {boolean} overwrite - Whether the selection is to be overwritten if it is a range.
  */
-function insertAtCaret(text) {
+function insertAtCaret(text, overwrite) {
     var sel = document.getSelection();
     var range = sel.getRangeAt(0);
     let insert = document.createTextNode(text);
+    if(sel.type == 'Range' && overwrite) {
+        range.deleteContents();
+    }
     range.insertNode(insert);
     range.setStartAfter(insert);
     range.setEndAfter(insert);
@@ -118,4 +128,10 @@ function insertAroundCaret(startFence, endFence) {
         range.setEnd(ef, 0);
     }
     sel.addRange(range);
+}
+
+function onPaste(e) {
+    e.preventDefault();
+    if(e.clipboardData.types.includes('Files')) {return;}
+    insertAtCaret(e.clipboardData.getData('text/plain'), true);
 }

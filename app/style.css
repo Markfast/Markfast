@@ -1,3 +1,4 @@
+/* FONT MAGIC */
 @font-face {
     font-family: 'Inconsolata';
     font-style: 'normal';
@@ -32,6 +33,7 @@
     src: local('Open Sans'), url('../resources/OpenSans-BoldItalic.ttf');
 }
 
+/* SIDE-BY-SIDE MAGIC */
 .row {
     display: table;
     width: 100%;
@@ -57,18 +59,22 @@
     width: 15%;
 }
 
+/* EDITOR PANE MAGIC */
+
 #editor-pane {
     padding-left: 20px;
-    font-size: 125%;
-    color: #bbb;
-    font-family: 'Inconsolata', monospace;
+    font-size: 125% !important;
+    color: #bbb !important;
+    font-family: 'Inconsolata', monospace !important;
     white-space: pre-wrap;
-    text-shadow: 1px 1px 1px #bbb;
+    text-shadow: 1px 1px 1px #bbb !important;
 }
 
 #editor-pane:read-write:focus {
      outline: none;
 }
+
+/* PREVIEW PANE MAGIC */
 
 #preview-pane {
     padding-left: 20px;
@@ -78,26 +84,26 @@
     text-shadow: 1px 1px 1px #bbb;
 }
 
-h1 {
+#preview-pane h1 {
     font-size: 125%;
 }
 
-h2 {
+#preview-pane h2 {
     font-size: 115%;
 }
 
-h3 {
+#preview-pane h3 {
     font-size: 105%;
 }
 
-h4 {
+#preview-pane h4 {
     font-size: 95%;
 }
 
-h5 {
+#preview-pane h5 {
     font-size: 85%;
 }
 
-h6 {
+#preview-pane h6 {
     font-size: 75%;
 }
