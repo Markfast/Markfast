@@ -1,14 +1,29 @@
+* {
+    color: #bbb;
+    text-shadow: 1px 1px 1px #bbb;
+}
+
 body {
     background-color: #222;
 }
 
-.row {
-    background-color: #222;
+/* Track */
+::-webkit-scrollbar-track {
+    background: black;
 }
 
-* {
-    color: #bbb;
-    text-shadow: 1px 1px 1px #bbb;
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.3);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(85, 85, 85, 0.3);
+}
+
+.row {
+    background-color: #222;
 }
 
 a {
