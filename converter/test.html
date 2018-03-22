@@ -1,10 +1,14 @@
 <script src="function.js"></script>
 <script src="regex.js"></script>
-<script src="converter.js"></script>
+<script src="converterDraft.js"></script>
 <script src="test.js"></script>
-<body id="test">
+<link rel="stylesheet" href="../github-markdown-css/github-markdown.css">
+<body id="test" class="markdown-body">
     <script>
-        converter.convertToHTML(testFileRaw);
-        //test(link);
+        let html = converter.convertToHTML(testFileRaw);  //testFileRaw
+        //let html = converter.convertToHTMLTestMany(boldAndItalicNestedWithAstricks);  //testFileRaw
+        converter.appendHTMLElement(html);
+
+
     </script>
 </body>

@@ -15,3 +15,9 @@
 ### Run Program
 
 `npm run electron`
+
+## Resources
+* Syntax Highlighting Support
+  * https://github.com/github/linguist
+* Markdown CSS
+  * https://github.com/sindresorhus/github-markdown-css/blob/gh-pages/github-markdown.css

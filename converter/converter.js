@@ -20,7 +20,8 @@ converter.convertToHTML = function(markdown) {
     for(lineCounter = 0; lineCounter < lines.length; lineCounter++) {
         line = lines[lineCounter];
 
-        if (this.currentObject == 0) {
+        if (line == "\n") continue;
+        else if (this.currentObject == 0) {
             this.evaluateObject(line);
         }
 
@@ -98,7 +99,26 @@ converter.convertToHTML = function(markdown) {
 // Emphasis & Links Methods
 //=============================================================================
 converter.convertInLine = function (line) {
-    let htmlElement = line;
+    let htmlElement = line
+
+    while (regexCodeBlockBackQuote.test(htmlElement) || regexCodeBlockTilde.test(htmlElement)) {
+        // If Code Block
+        function replacer(match, p1, p2, p3, p4, p5) {
+            // Call convertInLine recursivly on the strings not in the code block
+            return converter.convertInLine(p1) + "<pre><code>" + p3 + "</code></pre>" + converter.convertInLine(p5);
+        }
+        htmlElement = htmlElement.replace(regexCodeBlockBackQuote, replacer);
+        return htmlElement;
+    }
+    while (regexCode.test(htmlElement)) {
+        // If Code Block
+        function replacer(match, p1, p2, p3, p4, p5) {
+            // Call convertInLine recursivly on the strings not in the code block
+            return converter.convertInLine(p1) + "<code>" + p3 + "</code>" + converter.convertInLine(p5);
+        }
+        htmlElement = htmlElement.replace(regexCode, replacer);
+        return htmlElement;
+    }
     while (regexBackslashCheck.test(htmlElement)) {
         htmlElement = htmlElement.replace(regexBackslash, "$1U+0005C$3");
     }
@@ -140,17 +160,15 @@ converter.getBulletType = function (line) {
 //=============================================================================
 // General Methods
 //=============================================================================
-
 converter.evaluateObject = function(line) {
-    console.log(line);
     if (line[0] == "#") this.currentObject = this.OBJECT_HEADERS;
-    else if (line[0] == "-") this.currentObject = this.OBJECT_LIST;
-    else if (line[0] == /^\d+$/) this.currentObject = this.OBJECT_LIST;
-    else if (/(\s*)(\>)(.*)/.test(line)) this.currentObject = this.OBJECT_BLOCKQUOTES;
+    else if (regexUnorderedList.test(line)) this.currentObject = this.OBJECT_LIST;
+    else if (regexOrderedList.test(line)) this.currentObject = this.OBJECT_LIST;
+    else if (regexBlockquote.test(line)) this.currentObject = this.OBJECT_BLOCKQUOTES;
     else this.currentObject = 0; //  && line[1] == "."
 }
 
 converter.appendHTMLElement = function (htmlElement) {
-    document.getElementById("test").innerHTML += htmlElement + "<br />";
+    document.getElementById("test").innerHTML += htmlElement;
     this.currentObject = 0;
 }
