@@ -15,7 +15,8 @@ class EditorWindow extends BrowserWindow {
     constructor(url) {
         super({
             show: false,
-            backgroundColor: '#182828'
+            backgroundColor: '#182828',
+            icon: './resources/logo.ico'
         });
 
         this.loadURL(`file://${__dirname}/index.html`);

@@ -8,7 +8,6 @@ let mainWindow;
 let config = new Config();
 
 app.on('ready', () => {
-    config.set('openfile', './test.md');
     mainWindow = new EditorWindow();
     let menu = Menu.buildFromTemplate(menuTemplate);
     mainWindow.setMenu(menu);
@@ -19,7 +18,7 @@ app.on('ready', () => {
  * Clears editor and removes current file from config.
  */
 function newFile() {
-    mainWindow.webContents.send('CLEAR_EDITOR');
+    mainWindow.webContents.send('SET_EDITOR_CONTENTS', '');
     config.delete('openfile')
 }
 
@@ -124,7 +123,11 @@ const menuTemplate = [
       submenu: [
         {role: 'reload'},
         {role: 'forcereload'},
-        {role: 'toggledevtools'},
+        {
+            label: 'Toggle Developer Tools',
+            accelerator: 'F12',
+            click() {mainWindow.webContents.toggleDevTools();}
+        },
         {type: 'separator'},
         {role: 'resetzoom'},
         {role: 'zoomin'},

@@ -34,10 +34,6 @@
                 ipcRenderer.send('GET_EDITOR_CONTENTS2', document.getElementById('editor-pane').innerHTML);
             });
 
-            ipcRenderer.on('CLEAR_EDITOR', (event) => {
-                setEditorContents('');
-            });
-
             ipcRenderer.on('SET_EDITOR_CONTENTS', (event, data) => {
                 setEditorContents(data);
             })

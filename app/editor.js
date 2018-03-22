@@ -18,6 +18,11 @@ window.onload = function() {
     editorPane.addEventListener('input', onEdit);
 }
 
+/**
+ * Replaces the contents of the editor pane.
+ * Also refreshes the preview pane.
+ * @param {string} con - The new contents of the editor pane.
+ */
 function setEditorContents(con) {
     editorPane.innerHTML = con;
     onEdit();
