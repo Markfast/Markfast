@@ -21,6 +21,6 @@
   "homepage": "https://github.com/Markfast/Markfast#readme",
   "dependencies": {
     "electron": "^1.8.3",
-    "electron-pane-window": "0.0.1"
+    "electron-config": "^1.0.0"
   }
 }

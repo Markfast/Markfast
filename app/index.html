@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Markfast</title>
+        <link rel="stylesheet" href="./style.css"/>
+        <script src="./editor.js"></script>
+        <script src="../converter/function.js"></script>
+        <script src="../converter/regex.js"></script>
+        <script src="../converter/converter.js"></script>
+    </head>
+    <body class="row">
+        <div id="directory-pane" class="col"></div>
+        <div id="editor-pane" contenteditable="true" class="col" tabindex="-1"></div>
+        <div id="preview-pane" class="col"></div>
+
+        <script>
+            // document.getElementById('directory-pane').style.width = '15%';
+            // document.getElementById('editor-pane').style.width = '50%';
+            // document.getElementById('preview-pane').style.width = '35%';
+            const electron = require('electron');
+            const {ipcRenderer} = electron;
+            const fs = require('fs');
+            const Config = require('electron-config');
+            let config = new Config();
+
+            if(config.get('openfile') !== undefined) {
+                var data = fs.readFileSync(config.get('openfile')).toString();
+                document.getElementById('editor-pane').innerHTML = data;
+                converter.convertToHTML(data);
+            }
+
+            ipcRenderer.on('GET_EDITOR_CONTENTS', (event) => {
+                ipcRenderer.send('GET_EDITOR_CONTENTS2', document.getElementById('editor-pane').innerHTML);
+            });
+
+            ipcRenderer.on('SET_EDITOR_CONTENTS', (event, data) => {
+                setEditorContents(data);
+            })
+        </script>
+    </body>
+</html>

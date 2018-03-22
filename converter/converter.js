@@ -169,6 +169,10 @@ converter.evaluateObject = function(line) {
 }
 
 converter.appendHTMLElement = function (htmlElement) {
+<<<<<<< HEAD
     document.getElementById("test").innerHTML += htmlElement;
+=======
+    document.getElementById("preview-pane").innerHTML += htmlElement + "<br />";
+>>>>>>> 340abdd0da57b0e14a902bce9ff924a52a779218
     this.currentObject = 0;
 }
