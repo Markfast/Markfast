@@ -26,6 +26,38 @@ body {
     background-color: #fbfbfb;
 }
 
+#directory-pane {
+    background-color: #ccccd7;
+}
+
+.parent-dir {
+    color: #0074D9 !important;
+    text-shadow: 1px 1px 1px #0074D9;
+}
+
+.parent-dir::before {
+    color: #0074D9 !important;
+    text-shadow: 1px 1px 1px #0074D9 !important;
+}
+
+.subdir {
+    color: #333;
+}
+
+.subdir::before {
+    color: #666
+}
+
+.mdfile {
+    color: black;
+    text-shadow: 1px 1px 1px black;
+}
+
+.txtfile {
+    color: #333;
+    text-shadow: 1px 1px 1px #333;
+}
+
 a {
     color: #0074D9;
     text-shadow: 1px 1px 1px #0074D9;

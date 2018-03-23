@@ -22,6 +22,10 @@ body {
     background: rgba(85, 85, 85, 0.3);
 }
 
+#directory-pane {
+    background-color: #171717;
+}
+
 .parent-dir {
     color: #777;
 }
