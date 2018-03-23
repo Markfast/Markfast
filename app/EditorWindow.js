@@ -1,6 +1,5 @@
 const electron = require('electron');
 const {BrowserWindow} = electron;
-const fs = require('fs');
 const Config = require('electron-config');
 
 let config = new Config();
@@ -15,15 +14,43 @@ class EditorWindow extends BrowserWindow {
     constructor(url) {
         super({
             show: false,
-            backgroundColor: '#182828',
+            backgroundColor: config.get('background'),
             icon: './resources/logo.ico'
+            // webPreferences: {
+            //     experimentalFeatures: true
+            // }
         });
 
         this.loadURL(`file://${__dirname}/index.html`);
 
         this.on('ready-to-show', () => {
-            this.maximize();
-        })
+            // let dpw = config.get('directory-pane-width');
+            // let epw = config.get('editor-pane-width');
+            // let ppw = config.get('preview-pane-width');
+            // if(dpw !== undefined) {
+            //     this.webContents.send('SET_WIDTH', 'directory-pane', dpw);
+            // }
+            // if(epw !== undefined) {
+            //     this.webContents.send('SET_WIDTH', 'editor-pane', epw);
+            // }
+            // if(ppw !== undefined) {
+            //     this.webContents.send('SET_WIDTH', 'preview-pane', ppw);
+            // }
+            if(config.get('editor-width') === undefined) {
+                this.maximize();
+                config.set('editor-width', this.getSize()[0]);
+                config.set('editor-height', this.getSize()[1]);
+            }
+            else {
+                this.setSize(config.get('editor-width'), config.get('editor-height'), false)
+                this.show();
+            }
+        });
+
+        this.on('resize', () => {
+            config.set('editor-width', this.getSize()[0]);
+            config.set('editor-height', this.getSize()[1]);
+        });
     }
 }
 

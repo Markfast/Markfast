@@ -2,9 +2,23 @@
   "name": "markfast",
   "version": "1.0.0",
   "description": "A text editor built for Markdown",
+  "contributors": [
+    {
+      "name": "Ben Myers",
+      "email": "ben.myers@okstate.edu"
+    },
+    {
+      "name": "Christopher Thomas",
+      "email": "christopher.c.thomas@okstate.edu"
+    }
+  ],
   "main": "index.js",
   "scripts": {
     "electron": "electron ."
+  },
+  "build": {
+    "appId": "edu.okstate.cs.markfast",
+    "app-category-type": "public.app-category.developer-tools"
   },
   "repository": {
     "type": "git",
@@ -13,7 +27,6 @@
   "keywords": [
     "markdown"
   ],
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Markfast/Markfast/issues"
@@ -21,6 +34,10 @@
   "homepage": "https://github.com/Markfast/Markfast#readme",
   "dependencies": {
     "electron": "^1.8.3",
-    "electron-config": "^1.0.0"
+    "electron-config": "^1.0.0",
+    "prismjs": "^1.13.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^20.6.2"
   }
 }

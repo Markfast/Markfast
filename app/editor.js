@@ -9,16 +9,36 @@ const KEYS = {
     TAB: 9
 }
 
+const MARKDOWN_EXTENSIONS = ['.md', '.markdown', '.markdn', '.mdown'];
+const TEXT_EXTENSIONS = ['', '.txt']
+
 let directoryPane, editorPane, previewPane;
 
-document.undoStack = [];
-
 window.onload = function() {
+    directoryPane = document.getElementById('directory-pane');
     editorPane = document.getElementById('editor-pane');
     previewPane = document.getElementById('preview-pane');
 
     editorPane.addEventListener('input', onEdit);
     editorPane.addEventListener('paste', onPaste);
+
+    var li_ul = document.querySelectorAll(".col_ul li  ul");
+    for (var i = 0; i < li_ul.length; i++) {
+        li_ul[i].style.display = "none"
+    };
+
+    var exp_li = document.querySelectorAll(".col_ul li > span");
+    for (var i = 0; i < exp_li.length; i++) {
+        exp_li[i].style.cursor = "pointer";
+        exp_li[i].onclick = showul;
+    };
+    function showul () {
+        nextul = this.nextElementSibling;
+        if(nextul.style.display == "block")
+            nextul.style.display = "none";
+        else
+            nextul.style.display = "block";
+    }
 }
 
 /**
@@ -36,52 +56,51 @@ function setEditorContents(con) {
  * Should be called every time the editor pane is modified.
  */
 function onEdit() {
-    document.undoStack.push(editorPane.innerHTML);
     previewPane.innerHTML = '';
     converter.convertToHTML(editorPane.innerHTML);
 }
 
 window.addEventListener('keydown', (e) => {
     let focused = document.querySelector(':focus');
-    console.log(focused);
-    if(focused === editorPane && e.keyCode == KEYS.TAB) {
-        e.preventDefault();
-        insertAtCaret('\t', false);
+    if(focused === editorPane) {
+        if(e.keyCode == KEYS.TAB) {
+            e.preventDefault();
+            insertAtCaret('\t', false);
+        }
+        else if(e.keyCode == KEYS.BACKTICK) {
+            e.preventDefault();
+            insertAroundCaret('`', '`');
+        }
+        else if((e.ctrlKey || e.metaKey) && e.keyCode == KEYS.B) {
+            e.preventDefault();
+            insertAroundCaret('**', '**');
+        }
+        else if((e.ctrlKey || e.metaKey) && e.keyCode == KEYS.I) {
+            e.preventDefault();
+            insertAroundCaret('*', '*');
+        }
+        else if(!(e.shiftKey) && e.keyCode == KEYS.QUOTE) {
+            e.preventDefault();
+            insertAroundCaret("'", "'");
+        }
+        else if(e.shiftKey && e.keyCode == KEYS.QUOTE) {
+            e.preventDefault();
+            insertAroundCaret('"', '"');
+        }
+        else if(e.shiftKey && e.keyCode == KEYS.LEFT_BRACKET) {
+            e.preventDefault();
+            insertAroundCaret('{', '}');
+        }
+        else if(!(e.shiftKey) && e.keyCode == KEYS.LEFT_BRACKET) {
+            e.preventDefault();
+            insertAroundCaret('[', ']');
+        }
+        else if(e.shiftKey && e.keyCode == KEYS.LEFT_PARENTHESIS) {
+            e.preventDefault();
+            insertAroundCaret('(', ')');
+        }
+        onEdit();
     }
-    else if(focused === editorPane && e.keyCode == KEYS.BACKTICK) {
-        e.preventDefault();
-        insertAroundCaret('`', '`');
-    }
-    else if(focused === editorPane && ((e.ctrlKey || e.metaKey) && e.keyCode == KEYS.B)) {
-        e.preventDefault();
-        insertAroundCaret('**', '**');
-    }
-    else if(focused === editorPane && ((e.ctrlKey || e.metaKey) && e.keyCode == KEYS.I)) {
-        e.preventDefault();
-        insertAroundCaret('*', '*');
-    }
-    else if(focused === editorPane && (!(e.shiftKey) && e.keyCode == KEYS.QUOTE)) {
-        e.preventDefault();
-        insertAroundCaret("'", "'");
-    }
-    else if(focused === editorPane && (e.shiftKey && e.keyCode == KEYS.QUOTE)) {
-        e.preventDefault();
-        insertAroundCaret('"', '"');
-    }
-    else if(focused === editorPane && (e.shiftKey && e.keyCode == KEYS.LEFT_BRACKET)) {
-        e.preventDefault();
-        insertAroundCaret('{', '}');
-    }
-    else if(focused === editorPane && (!(e.shiftKey) && e.keyCode == KEYS.LEFT_BRACKET)) {
-        e.preventDefault();
-        insertAroundCaret('[', ']');
-    }
-    else if(focused === editorPane && (e.shiftKey && e.keyCode == KEYS.LEFT_PARENTHESIS)) {
-        e.preventDefault();
-        insertAroundCaret('(', ')');
-    }
-    if(focused === editorPane) {onEdit();}
-
 }, false);
 
 /**
@@ -130,8 +149,61 @@ function insertAroundCaret(startFence, endFence) {
     sel.addRange(range);
 }
 
+/**
+ * Pastes clipboard contents as plain text into the editor.
+ * Ignores pasting data that contains files.
+ * @param {Event} e - Paste event
+ */
 function onPaste(e) {
     e.preventDefault();
     if(e.clipboardData.types.includes('Files')) {return;}
     insertAtCaret(e.clipboardData.getData('text/plain'), true);
+}
+
+function loadDirectory(dir) {
+    let tree = document.getElementById('tree');
+    tree.innerHTML = '';
+    let parent = path.join(dir, '..');
+    let up = document.createElement('li');
+    up.innerHTML = '..';
+    up.onclick = () => {loadDirectory(parent);}
+    up.classList.add('subdir');
+    up.classList.add('parent-dir');
+    tree.appendChild(up);
+    fs.readdir(dir, (err, files) => {
+        // SUBDIRECTORIES FIRST
+        files.forEach(file => {
+            if(fs.statSync(path.join(dir, file)).isDirectory()) {
+                let dirRecord = document.createElement('li');
+                dirRecord.innerHTML = file;
+                dirRecord.onclick = () => {loadDirectory(path.join(dir, file));}
+                dirRecord.classList.add('subdir');
+                tree.appendChild(dirRecord);
+            }
+        });
+        // THEN FILES
+        files.forEach(file => {
+            if(!fs.statSync(path.join(dir, file)).isDirectory()) {
+                let fileRecord = document.createElement('li');
+                fileRecord.innerHTML = file;
+                fileRecord.onclick = () => {
+                    config.set('openfile', path.join(dir, file));
+                    let content = fs.readFile(path.join(dir, file), 'utf-8', (err, data) => {
+                        setEditorContents(data);
+                    })
+                }
+                fileRecord.classList.add('treefile');
+                if(MARKDOWN_EXTENSIONS.indexOf(path.extname(file)) > -1) {
+                    fileRecord.classList.add('mdfile');
+                }
+                else if(TEXT_EXTENSIONS.indexOf(path.extname(file)) > -1) {
+                    fileRecord.classList.add('txtfile');
+                }
+                else {
+                    fileRecord.classList.add('otherfile');
+                }
+                tree.appendChild(fileRecord);
+            }
+        });
+    });
 }

@@ -3,12 +3,27 @@ const {app, Menu, dialog, ipcMain} = electron;
 const Config = require('electron-config');
 const fs = require('fs');
 const EditorWindow = require('./app/EditorWindow');
+const MarkdownGuideWindow = require('./app/MarkdownGuideWindow');
 
-let mainWindow;
+let mainWindow, markdownGuide;
+let windows = [];
 let config = new Config();
 
+/**
+ * Initiates Markfast.
+ * Loads windows and sets initial configs if need be.
+ */
 app.on('ready', () => {
+    if(config.get('theme') === undefined) {
+        config.set('theme', 'DARK');
+    }
+    if(config.get('cmdorctrl') === undefined) {
+        config.set('cmdorctrl', process.platform === 'darwin' ? '&#8984;' : 'Ctrl+');
+    }
     mainWindow = new EditorWindow();
+    mainWindow.on('close', () => {app.quit();})
+    windows.push(mainWindow);
+    swapTheme(config.get('theme'))
     let menu = Menu.buildFromTemplate(menuTemplate);
     mainWindow.setMenu(menu);
 });
@@ -79,6 +94,48 @@ function saveAs() {
     });
 }
 
+/**
+ * Determines whether a theme is the current theme.
+ * Used to set the initial radio selection for the theme menu from config.
+ * @param {string} id - The theme ID (an ID of `FOO` will use the `theme_FOO` CSS file).
+ * @returns {boolean} Whether the given ID matches the theme config.
+ */
+function isTheme(id) {
+    return id == config.get('theme');
+}
+
+/**
+ * Alerts all active windows to change their theme.
+ * Also sets the theme in config.
+ * @param {string} id - The theme ID to switch to (an ID of `FOO` will use the `theme_FOO` CSS file).
+ */
+function swapTheme(id) {
+    config.set('theme', id);
+    windows.forEach(win => {
+        win.webContents.send('SWAP_THEME', id);
+    })
+}
+
+/**
+ * Opens the Markdown Guide window.
+ * Opens a new guide window if none are open, or reshows the guide window if it's already open.
+ */
+function openMarkdownGuide() {
+    if(markdownGuide == null) {
+        markdownGuide = new MarkdownGuideWindow();
+        markdownGuide.on('close', () => {
+            markdownGuide = null;
+            windows.splice(windows.indexOf(markdownGuide), 1);
+        })
+        markdownGuide.setMenu(null);
+        windows.push(markdownGuide);
+    }
+    else {
+        markdownGuide.webContents.reloadIgnoringCache();
+        markdownGuide.show();
+    }
+}
+
 const menuTemplate = [
     {
         label: 'File',
@@ -129,6 +186,25 @@ const menuTemplate = [
             click() {mainWindow.webContents.toggleDevTools();}
         },
         {type: 'separator'},
+        {
+            label: 'Theme',
+            submenu: [
+                {
+                    label: 'Dark',
+                    id: 'DARK',
+                    type: 'radio',
+                    checked: isTheme('DARK'),
+                    click() {swapTheme('DARK');}
+                },
+                {
+                    label: 'Light',
+                    id: 'LIGHT',
+                    type: 'radio',
+                    checked: isTheme('LIGHT'),
+                    click() {swapTheme('LIGHT');}
+                }
+            ]
+        },
         {role: 'resetzoom'},
         {role: 'zoomin'},
         {role: 'zoomout'},
@@ -139,7 +215,12 @@ const menuTemplate = [
     {
         label: 'Help',
         submenu: [
-            {role: 'about'}
+            {role: 'about'},
+            {
+                label: 'Markdown Guide',
+                accelerator: 'F1',
+                click() {openMarkdownGuide();}
+            }
         ]
     }
 ]

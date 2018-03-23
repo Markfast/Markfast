@@ -1,0 +1,181 @@
+/* FONT MAGIC */
+@font-face {
+    font-family: 'Inconsolata';
+    font-style: 'normal';
+    src: local('Inconsolata'), url('../../resources/Inconsolata-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Open Sans'), url('../../resources/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style: italic;
+    font-weight: normal;
+    src: local('Open Sans'), url('../../resources/OpenSans-Italic.ttf');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: bold;
+    src: local('Open Sans'), url('../../resources/OpenSans-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style: italic;
+    font-weight: bold;
+    src: local('Open Sans'), url('../../resources/OpenSans-BoldItalic.ttf');
+}
+
+* {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 110%;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: black;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.3);
+    border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(85, 85, 85, 0.3);
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+code {
+    display: inline;
+    font-family: 'Inconsolata', monospace !important;
+}
+
+hr {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+table, tr, th, td {
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px;
+}
+
+kbd {
+    font-family: 'Inconsolata', monospace !important;
+    border-radius: 3px;
+    padding: 3px;
+}
+
+/* SIDE-BY-SIDE MAGIC */
+.row {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    padding: 0px;
+    margin: 0px;
+    height: 95%;
+}
+
+.col {
+    display: table-cell;
+    resize: horizontal;
+    overflow: auto;
+    /* min-width: 10%; */
+    height: 85vh;
+    min-width: 0;
+    max-height: 85vh;
+    box-shadow: 0px 0px 3px #000;
+    -webkit-font-smoothing: antialiased;
+}
+
+#directory-pane {
+    width: 15%;
+    font-size: 50%;
+    overflow-x: auto;
+    overflow-wrap: unset;
+}
+
+#tree {
+    list-style: none;
+    padding-left: 5px;
+    /* text-indent: -1em; */
+    white-space: nowrap;
+}
+
+.subdir::before {
+    content: '\1F4C1\FE0E';
+    padding-right: 5px;
+}
+
+.treefile::before {
+    content: '\0020\0020\0020';
+    padding-right: 1em;
+}
+
+/* EDITOR PANE MAGIC */
+
+#editor-pane {
+    padding-left: 20px;
+    font-family: 'Inconsolata', monospace !important;
+    white-space: pre-wrap;
+}
+
+#editor-pane:read-write:focus {
+     outline: none;
+}
+
+/* PREVIEW PANE MAGIC */
+
+#preview-pane {
+    padding-left: 20px;
+    font-family: 'Open Sans', sans-serif;
+    /* width: 20%; */
+}
+
+#preview-pane h1 {
+    font-size: 125%;
+}
+
+#preview-pane h2 {
+    font-size: 115%;
+}
+
+#preview-pane h3 {
+    font-size: 105%;
+}
+
+#preview-pane h4 {
+    font-size: 95%;
+}
+
+#preview-pane h5 {
+    font-size: 85%;
+}
+
+#preview-pane h6 {
+    font-size: 75%;
+}

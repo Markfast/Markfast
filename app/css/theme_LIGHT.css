@@ -1,0 +1,52 @@
+* {
+    color: #666;
+    text-shadow: 1px 1px 1px #666;
+}
+
+body {
+    background-color: #fbfbfb;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.5);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(85, 85, 85, 0.5);
+}
+
+.row {
+    background-color: #fbfbfb;
+}
+
+a {
+    color: #0074D9;
+    text-shadow: 1px 1px 1px #0074D9;
+}
+
+hr {
+    border: 1px solid #aaa;
+}
+
+kbd {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    text-shadow: 1px 1px 1px black;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+code {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+table, tr, th, td {
+    border: 1px solid #aaa;
+}

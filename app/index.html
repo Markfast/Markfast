@@ -3,14 +3,22 @@
     <head>
         <meta charset="utf-8">
         <title>Markfast</title>
-        <link rel="stylesheet" href="./style.css"/>
+        <link rel="stylesheet" href="./css/style.css"/>
+        <link rel="stylesheet" href="./css/theme_DARK.css" id="theme">
         <script src="./editor.js"></script>
         <script src="../converter/function.js"></script>
         <script src="../converter/regex.js"></script>
         <script src="../converter/converter.js"></script>
     </head>
     <body class="row">
-        <div id="directory-pane" class="col"></div>
+        <div id="directory-pane" class="col">
+            <ul id="tree" class="col_ul">
+                <li>..</li>
+                <li><span>This should shrink</span>
+                    <ul><li>Does it though?</li></ul>
+                </li>
+            </ul>
+        </div>
         <div id="editor-pane" contenteditable="true" class="col" tabindex="-1"></div>
         <div id="preview-pane" class="col"></div>
 
@@ -21,13 +29,22 @@
             const electron = require('electron');
             const {ipcRenderer} = electron;
             const fs = require('fs');
+            const path = require('path');
             const Config = require('electron-config');
             let config = new Config();
+            changeTheme(config.get('theme'));
+
+            // new ResizeObserver(onDirectoryResize).observe(document.getElementById('directory-pane'));
+            // new ResizeObserver(onEditorResize).observe(document.getElementById('editor-pane'));
+            // new ResizeObserver(onPreviewResize).observe(document.getElementById('preview-pane'));
 
             if(config.get('openfile') !== undefined) {
                 var data = fs.readFileSync(config.get('openfile')).toString();
                 document.getElementById('editor-pane').innerHTML = data;
                 converter.convertToHTML(data);
+
+                let dir = path.join(config.get('openfile'), '..');
+                loadDirectory(dir);
             }
 
             ipcRenderer.on('GET_EDITOR_CONTENTS', (event) => {
@@ -36,7 +53,55 @@
 
             ipcRenderer.on('SET_EDITOR_CONTENTS', (event, data) => {
                 setEditorContents(data);
-            })
+            });
+
+            ipcRenderer.on('SWAP_THEME', (event, theme) => {
+                changeTheme(theme);
+            });
+
+            // ipcRenderer.on('SET_WIDTH', (event, paneId, width) => {
+            //     console.log(event, document.getElementById(paneId), 'EXPECTED', width);
+            //     document.getElementById(paneId).offsetWidth = width + 'px';
+            //     console.log(event, document.getElementById(paneId), 'ACTUAL', document.getElementById(paneId).offsetWidth);
+            // });
+
+            function changeTheme(theme) {
+                if(document.getElementById('theme')) {
+                    document.head.removeChild(document.getElementById('theme'));
+                }
+                let newTheme = document.createElement('link');
+                newTheme.id = 'theme';
+                newTheme.rel = 'stylesheet';
+                newTheme.href = `./css/theme_${theme}.css`;
+                document.head.appendChild(newTheme);
+            }
+
+            /**
+             * Alerts config of a change to the directory pane's width.
+             * Called by ResizeObserver whenever the directory pane changes its dimensions.
+             */
+            // function onDirectoryResize() {
+            //     config.set('directory-pane-width', document.getElementById('directory-pane').offsetWidth);
+            //     console.log('DP', config.get('directory-pane-width'), document.getElementById('directory-pane').offsetWidth)
+            // }
+
+            /**
+             * Alerts config of a change to the editor pane's width.
+             * Called by ResizeObserver whenever the editor pane changes its dimensions.
+             */
+            // function onEditorResize() {
+            //     config.set('editor-pane-width', document.getElementById('editor-pane').offsetWidth);
+            //     console.log('EP', config.get('editor-pane-width'), document.getElementById('editor-pane').offsetWidth)
+            // }
+
+            /**
+             * Alerts config of a change to the preview pane's width.
+             * Called by ResizeObserver whenever the preview pane changes its dimensions.
+             */
+            // function onPreviewResize() {
+            //     config.set('preview-pane-width', document.getElementById('preview-pane').offsetWidth);
+            //     console.log('PP', config.get('preview-pane-width'), document.getElementById('preview-pane').offsetWidth)
+            // }
         </script>
     </body>
 </html>

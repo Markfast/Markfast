@@ -1,0 +1,80 @@
+* {
+    color: #bbb;
+    text-shadow: 1px 1px 1px #bbb;
+}
+
+body {
+    background-color: #222;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: black;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(136, 136, 136, 0.3);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(85, 85, 85, 0.3);
+}
+
+.parent-dir {
+    color: #777;
+}
+
+.parent-dir::before {
+    color: #777 !important;
+    text-shadow: 1px 1px 1px black;
+}
+
+.subdir::before {
+    color: khaki;
+    text-shadow: 1px 1px 1px black;
+}
+
+.mdfile {
+    color: inherit;
+}
+
+.txtfile {
+    color: #999;
+    text-shadow: 1px 1px 1px #999;
+}
+
+.otherfile {
+    color: #777;
+    text-shadow: 1px 1px 1px #777;
+}
+
+.row {
+    background-color: #222;
+}
+
+a {
+    color: #0074D9;
+    text-shadow: 1px 1px 1px #0074D9;
+}
+
+hr {
+    border-color: #444;
+}
+
+kbd {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    text-shadow: 1px 1px 1px black;
+    box-shadow: 1px 1px 1px black;
+}
+
+code {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+table, tr, th, td {
+    border: 1px solid #444;
+}

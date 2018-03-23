@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>About Markdown</title>
+        <link href="./css/style.css" rel="stylesheet"/>
+    </head>
+    <body style="font-size: smaller;">
+        <script>
+            const electron = require('electron');
+            const {ipcRenderer} = electron;
+            const Config = require('electron-config');
+            let config = new Config();
+            const f1 = 112;
+
+            changeTheme(config.get('theme'));
+
+            ipcRenderer.on('SWAP_THEME', (event, theme) => {
+                changeTheme(theme);
+            });
+
+            function changeTheme(theme) {
+                console.log('swap', theme);
+                if(document.getElementById('theme')) {
+                    document.head.removeChild(document.getElementById('theme'));
+                }
+                let newTheme = document.createElement('link');
+                newTheme.id = 'theme';
+                newTheme.rel = 'stylesheet';
+                newTheme.href = `./css/theme_${theme}.css`;
+                document.head.appendChild(newTheme);
+            }
+
+            window.addEventListener('keydown', (e) => {
+                if(e.keyCode == f1) {
+                    window.location.refresh();
+                }
+            }, false);
+        </script>
+
+        <center><h1>Your Guide to Markdown</h1></center>
+        <div><center>
+            <a href="https://daringfireball.net/projects/markdown/" title="The official website of the Markdown language">Markdown</a>
+            is a markup language designed to be legible and easy to convert to HTML.
+            The Markfast editor is currently using the <a href="http://spec.commonmark.org/0.28/" title="CommonMark Spec Version 0.28">CommonMark Spec v0.28</a>.
+            The following is a guide to Markdown's syntax.
+        </center></div>
+        <hr/>
+        <h2 id="toc">Table of Contents</h2>
+        <ul>
+            <li><a href="#inline-html">Inline HTML</a></li>
+            <li><a href="#headings">Headings</a></li>
+            <li><a href="#emphasis">Emphasis</a></li>
+            <li><a href="#lists">Lists</a></li>
+            <li><a href="#links">Links</a></li>
+            <li><a href="#images">Images</a></li>
+        </ul>
+        <hr/>
+        <!-- INLINE HTML -->
+        <h2 id="inline-html">Inline HTML</h2>
+        <div>
+            Inline HTML tags are parsed as HTML, meaning they can be used to structure a Markdown document.
+            For instance, to format some text as inline code, you could use Markdown's native method of
+            placing a backtick at each end of the inline code, or you could wrap the inline code in <code>&lt;code&gt;</code> tags.
+        </div>
+        <br/>
+        <table style="width: 100%; font-size: smaller;">
+            <tr>
+                <th>Markdown</th>
+                <th>Presentation</th>
+                <th>Hotkeys</th>
+            </tr>
+            <tr>
+                <td><pre><code class="lang-md">`Inline code`</td>
+                <td><code>Inline code</code></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><pre><code class="lang-html">&lt;code&gt;Inline code&lt;/code&gt;</td>
+                <td><code>Inline code</code></td>
+                <td></td>
+            </tr>
+        </table>
+        <hr/>
+        <!-- HEADINGS -->
+        <h2 id="headings">Headings</h2>
+        <div>
+            To use HTML <code>h1</code>-<code>h6</code> headings, use pound signs at the start of the line.
+            For instance, use <code>#</code> for <code>h1</code>, <code>##</code> for <code>h2</code>,
+            and so forth up to <code>######</code> for <code>h6</code>.
+        </div>
+        <br/>
+        <table style="width: 100%; font-size: smaller;">
+            <thead>
+                <th>Markdown</th>
+                <th>Presentation</th>
+                <th>Hotkeys</th>
+            </thead>
+            <tr>
+                <td><pre><code class="lang-md"># Heading 1</td>
+                <td><h1 style="font-size: 125%;">Heading 1</h1></td>
+                <td><kbd><script>document.write(config.get('cmdorctrl'))</script>1</kbd></td>
+            </tr>
+            <tr>
+                <td><pre><code class="lang-md">## Heading 2</td>
+                <td><h2 style="font-size: 115%;">Heading 2</h2></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><pre><code class="lang-md">### Heading 3</td>
+                <td><h3 style="font-size: 105%;">Heading 3</h3></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><pre><code class="lang-md">#### Heading 4</td>
+                <td><h4 style="font-size: 95%;">Heading 4</h4></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><pre><code class="lang-md">##### Heading 5</td>
+                <td><h5 style="font-size: 85%;">Heading 5</h5></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><pre><code class="lang-md">###### Heading 6</td>
+                <td><h6 style="font-size: 75%;">Heading 6</h6></td>
+                <td></td>
+            </tr>
+        </table>
+        <hr/>
+        <!-- EMPHASIS -->
+        <h2 id="emphasis">Emphasis</h2>
+        <div>
+            Markdown supports bolding, italicizing, and strikethrough.
+            Any of these can be used in tandem with each other.
+        </div>
+        <br/>
+        <table style="width: 100%; font-size: smaller;">
+            <thead>
+                <th>Markdown</th>
+                <th>Presentation</th>
+                <th>Hotkeys</th>
+            </thead>
+            <tr>
+                <td>
+                    <pre><code class="lang-md">**This is bold.**</code></pre>
+                    <pre><code class="lang-md">__This is also bold.__</code></pre>
+                </td>
+                <td><strong>
+                    This is bold.<br/>
+                    This is also bold.
+                </strong></td>
+                <td><kbd><script>document.write(config.get('cmdorctrl'))</script>B</kbd></td>
+            </tr>
+            <tr>
+                <td>
+                    <pre><code class="lang-md">*This is italicized.*</code></pre>
+                    <pre><code class="lang-md">_This is also italicized._</code></pre>
+                </td>
+                <td><em>
+                    This is italicized.<br/>
+                    This is also italicized.
+                </em></td>
+                <td><kbd><script>document.write(config.get('cmdorctrl'))</script>I</kbd></td>
+            </tr>
+            <tr>
+                <td>
+                    <pre><code class="lang-md">~~This is struck through.~~</code></pre>
+                </td>
+                <td><strike>
+                    This is struck through.
+                </strike></td>
+                <td></td>
+            </tr>
+        </table>
+        <hr/>
+        <!-- LISTS -->
+        <h2 id="lists">Lists</h2>
+        <hr/>
+        <!-- LINKS -->
+        <h2 id="links">Links</h2>
+        <hr/>
+        <!-- IMAGES -->
+        <h2 id="images">Images</h2>
+        <hr/>
+    </body>
+</html>
