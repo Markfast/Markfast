@@ -9,6 +9,9 @@ const KEYS = {
     TAB: 9
 }
 
+const MARKDOWN_EXTENSIONS = ['.md', '.markdown', '.markdn', '.mdown'];
+const TEXT_EXTENSIONS = ['', '.txt']
+
 let directoryPane, editorPane, previewPane;
 
 window.onload = function() {
@@ -164,6 +167,8 @@ function loadDirectory(dir) {
     let up = document.createElement('li');
     up.innerHTML = '..';
     up.onclick = () => {loadDirectory(parent);}
+    up.classList.add('subdir');
+    up.classList.add('parent-dir');
     tree.appendChild(up);
     fs.readdir(dir, (err, files) => {
         // SUBDIRECTORIES FIRST
@@ -172,6 +177,7 @@ function loadDirectory(dir) {
                 let dirRecord = document.createElement('li');
                 dirRecord.innerHTML = file;
                 dirRecord.onclick = () => {loadDirectory(path.join(dir, file));}
+                dirRecord.classList.add('subdir');
                 tree.appendChild(dirRecord);
             }
         });
@@ -185,6 +191,16 @@ function loadDirectory(dir) {
                     let content = fs.readFile(path.join(dir, file), 'utf-8', (err, data) => {
                         setEditorContents(data);
                     })
+                }
+                fileRecord.classList.add('treefile');
+                if(MARKDOWN_EXTENSIONS.indexOf(path.extname(file)) > -1) {
+                    fileRecord.classList.add('mdfile');
+                }
+                else if(TEXT_EXTENSIONS.indexOf(path.extname(file)) > -1) {
+                    fileRecord.classList.add('txtfile');
+                }
+                else {
+                    fileRecord.classList.add('otherfile');
                 }
                 tree.appendChild(fileRecord);
             }

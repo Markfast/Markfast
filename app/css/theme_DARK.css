@@ -22,6 +22,34 @@ body {
     background: rgba(85, 85, 85, 0.3);
 }
 
+.parent-dir {
+    color: #777;
+}
+
+.parent-dir::before {
+    color: #777 !important;
+    text-shadow: 1px 1px 1px black;
+}
+
+.subdir::before {
+    color: khaki;
+    text-shadow: 1px 1px 1px black;
+}
+
+.mdfile {
+    color: inherit;
+}
+
+.txtfile {
+    color: #999;
+    text-shadow: 1px 1px 1px #999;
+}
+
+.otherfile {
+    color: #777;
+    text-shadow: 1px 1px 1px #777;
+}
+
 .row {
     background-color: #222;
 }

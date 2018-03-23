@@ -115,6 +115,25 @@ kbd {
 #directory-pane {
     width: 15%;
     font-size: 50%;
+    overflow-x: auto;
+    overflow-wrap: unset;
+}
+
+#tree {
+    list-style: none;
+    padding-left: 5px;
+    /* text-indent: -1em; */
+    white-space: nowrap;
+}
+
+.subdir::before {
+    content: '\1F4C1\FE0E';
+    padding-right: 5px;
+}
+
+.treefile::before {
+    content: '\0020\0020\0020';
+    padding-right: 1em;
 }
 
 /* EDITOR PANE MAGIC */
