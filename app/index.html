@@ -11,7 +11,14 @@
         <script src="../converter/converter.js"></script>
     </head>
     <body class="row">
-        <div id="directory-pane" class="col"></div>
+        <div id="directory-pane" class="col">
+            <ul id="tree" class="col_ul">
+                <li>..</li>
+                <li><span>This should shrink</span>
+                    <ul><li>Does it though?</li></ul>
+                </li>
+            </ul>
+        </div>
         <div id="editor-pane" contenteditable="true" class="col" tabindex="-1"></div>
         <div id="preview-pane" class="col"></div>
 
@@ -22,6 +29,7 @@
             const electron = require('electron');
             const {ipcRenderer} = electron;
             const fs = require('fs');
+            const path = require('path');
             const Config = require('electron-config');
             let config = new Config();
             changeTheme(config.get('theme'));
@@ -34,6 +42,9 @@
                 var data = fs.readFileSync(config.get('openfile')).toString();
                 document.getElementById('editor-pane').innerHTML = data;
                 converter.convertToHTML(data);
+
+                let dir = path.join(config.get('openfile'), '..');
+                loadDirectory(dir);
             }
 
             ipcRenderer.on('GET_EDITOR_CONTENTS', (event) => {

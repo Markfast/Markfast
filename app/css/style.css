@@ -97,13 +97,14 @@ kbd {
     table-layout: fixed;
     padding: 0px;
     margin: 0px;
+    height: 95%;
 }
 
 .col {
     display: table-cell;
     resize: horizontal;
     overflow: auto;
-    min-width: 10%;
+    /* min-width: 10%; */
     height: 85vh;
     min-width: 0;
     max-height: 85vh;
@@ -113,6 +114,7 @@ kbd {
 
 #directory-pane {
     width: 15%;
+    font-size: 50%;
 }
 
 /* EDITOR PANE MAGIC */
@@ -132,6 +134,7 @@ kbd {
 #preview-pane {
     padding-left: 20px;
     font-family: 'Open Sans', sans-serif;
+    /* width: 20%; */
 }
 
 #preview-pane h1 {

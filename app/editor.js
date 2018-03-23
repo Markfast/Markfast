@@ -12,11 +12,30 @@ const KEYS = {
 let directoryPane, editorPane, previewPane;
 
 window.onload = function() {
+    directoryPane = document.getElementById('directory-pane');
     editorPane = document.getElementById('editor-pane');
     previewPane = document.getElementById('preview-pane');
 
     editorPane.addEventListener('input', onEdit);
     editorPane.addEventListener('paste', onPaste);
+
+    var li_ul = document.querySelectorAll(".col_ul li  ul");
+    for (var i = 0; i < li_ul.length; i++) {
+        li_ul[i].style.display = "none"
+    };
+
+    var exp_li = document.querySelectorAll(".col_ul li > span");
+    for (var i = 0; i < exp_li.length; i++) {
+        exp_li[i].style.cursor = "pointer";
+        exp_li[i].onclick = showul;
+    };
+    function showul () {
+        nextul = this.nextElementSibling;
+        if(nextul.style.display == "block")
+            nextul.style.display = "none";
+        else
+            nextul.style.display = "block";
+    }
 }
 
 /**
@@ -136,4 +155,39 @@ function onPaste(e) {
     e.preventDefault();
     if(e.clipboardData.types.includes('Files')) {return;}
     insertAtCaret(e.clipboardData.getData('text/plain'), true);
+}
+
+function loadDirectory(dir) {
+    let tree = document.getElementById('tree');
+    tree.innerHTML = '';
+    let parent = path.join(dir, '..');
+    let up = document.createElement('li');
+    up.innerHTML = '..';
+    up.onclick = () => {loadDirectory(parent);}
+    tree.appendChild(up);
+    fs.readdir(dir, (err, files) => {
+        // SUBDIRECTORIES FIRST
+        files.forEach(file => {
+            if(fs.statSync(path.join(dir, file)).isDirectory()) {
+                let dirRecord = document.createElement('li');
+                dirRecord.innerHTML = file;
+                dirRecord.onclick = () => {loadDirectory(path.join(dir, file));}
+                tree.appendChild(dirRecord);
+            }
+        });
+        // THEN FILES
+        files.forEach(file => {
+            if(!fs.statSync(path.join(dir, file)).isDirectory()) {
+                let fileRecord = document.createElement('li');
+                fileRecord.innerHTML = file;
+                fileRecord.onclick = () => {
+                    config.set('openfile', path.join(dir, file));
+                    let content = fs.readFile(path.join(dir, file), 'utf-8', (err, data) => {
+                        setEditorContents(data);
+                    })
+                }
+                tree.appendChild(fileRecord);
+            }
+        });
+    });
 }

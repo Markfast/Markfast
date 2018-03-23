@@ -1,6 +1,5 @@
 const electron = require('electron');
 const {BrowserWindow} = electron;
-const fs = require('fs');
 const Config = require('electron-config');
 
 let config = new Config();
