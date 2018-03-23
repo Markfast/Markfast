@@ -13,7 +13,7 @@ class EditorWindow extends BrowserWindow {
      */
     constructor(url) {
         super({
-            show: false,
+            show: true,
             backgroundColor: config.get('background'),
             icon: './resources/logo.ico'
             // webPreferences: {
