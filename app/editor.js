@@ -38,7 +38,7 @@ function setEditorContents(con) {
  * Should be called every time the editor pane is modified.
  */
 function onEdit() {
-    previewPane.innerHTML = converter.convertToHTML(editorPane.innerHTML);
+    previewPane.innerHTML = converter.convertToHTML("\n" + editorPane.innerHTML);
 }
 
 window.addEventListener('keydown', (e) => {
