@@ -4,7 +4,7 @@
 }
 
 body {
-    background-color: #eee;
+    background-color: #fbfbfb;
 }
 
 /* Track */
@@ -23,7 +23,7 @@ body {
 }
 
 .row {
-    background-color: #eee;
+    background-color: #fbfbfb;
 }
 
 a {
@@ -32,7 +32,15 @@ a {
 }
 
 hr {
-    border-color: #444;
+    border: 1px solid #aaa;
+}
+
+kbd {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    text-shadow: 1px 1px 1px black;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 code {
@@ -40,5 +48,5 @@ code {
 }
 
 table, tr, th, td {
-    border: 1px solid #444;
+    border: 1px solid #aaa;
 }

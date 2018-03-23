@@ -35,6 +35,14 @@ hr {
     border-color: #444;
 }
 
+kbd {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    text-shadow: 1px 1px 1px black;
+    box-shadow: 1px 1px 1px black;
+}
+
 code {
     background-color: rgba(255, 255, 255, 0.1);
 }

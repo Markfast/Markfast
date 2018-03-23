@@ -58,9 +58,22 @@
     background: rgba(85, 85, 85, 0.3);
 }
 
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 code {
     display: inline;
     font-family: 'Inconsolata', monospace !important;
+}
+
+hr {
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 table, tr, th, td {
@@ -69,6 +82,12 @@ table, tr, th, td {
 
 th, td {
     padding: 5px;
+}
+
+kbd {
+    font-family: 'Inconsolata', monospace !important;
+    border-radius: 3px;
+    padding: 3px;
 }
 
 /* SIDE-BY-SIDE MAGIC */

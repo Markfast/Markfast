@@ -1,6 +1,5 @@
 const electron = require('electron');
 const {BrowserWindow} = electron;
-const fs = require('fs');
 const Config = require('electron-config');
 
 let config = new Config();
@@ -9,10 +8,9 @@ let config = new Config();
 class MarkdownGuideWindow extends BrowserWindow {
 
     /**
-     * Instantiates a new window of the editor.
-     * @param {string} url - the filepath of the initial Markdown file to load.
+     * Instantiates a new Markdown guide window.
      */
-    constructor(url) {
+    constructor() {
         super({
             backgroundColor: config.get('background'),
             icon: './resources/logo.ico'

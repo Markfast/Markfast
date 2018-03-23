@@ -9,11 +9,19 @@ let mainWindow, markdownGuide;
 let windows = [];
 let config = new Config();
 
+/**
+ * Initiates Markfast.
+ * Loads windows and sets initial configs if need be.
+ */
 app.on('ready', () => {
     if(config.get('theme') === undefined) {
         config.set('theme', 'DARK');
     }
+    if(config.get('cmdorctrl') === undefined) {
+        config.set('cmdorctrl', process.platform === 'darwin' ? '&#8984;' : 'Ctrl+');
+    }
     mainWindow = new EditorWindow();
+    mainWindow.on('close', () => {app.quit();})
     windows.push(mainWindow);
     swapTheme(config.get('theme'))
     let menu = Menu.buildFromTemplate(menuTemplate);
@@ -108,10 +116,24 @@ function swapTheme(id) {
     })
 }
 
+/**
+ * Opens the Markdown Guide window.
+ * Opens a new guide window if none are open, or reshows the guide window if it's already open.
+ */
 function openMarkdownGuide() {
-    markdownGuide = new MarkdownGuideWindow();
-    markdownGuide.setMenu(null);
-    windows.push(markdownGuide);
+    if(markdownGuide == null) {
+        markdownGuide = new MarkdownGuideWindow();
+        markdownGuide.on('close', () => {
+            markdownGuide = null;
+            windows.splice(windows.indexOf(markdownGuide), 1);
+        })
+        markdownGuide.setMenu(null);
+        windows.push(markdownGuide);
+    }
+    else {
+        markdownGuide.webContents.reloadIgnoringCache();
+        markdownGuide.show();
+    }
 }
 
 const menuTemplate = [
