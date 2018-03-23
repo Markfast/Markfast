@@ -12,7 +12,7 @@ let regexItalicUnderscore = /(.*)(\_)(.+)(\_)(.*)/;
 let regexItalicAstrickCheck    = /(.*)(\*\S)(.+)((\S)\*)(?!\*)(.*)/;
 let regexItalicUnderscoreCheck = /(.*)(\_\S)(.+)((\S)\_)(?!\_)(.*)/;
 // Links
-let regexLink = /(.*)(?!\!)(\[)(.*)(\]\()(.*)(\))(.*)/;
+let regexLink = /(.*)(?!\!\[)(.*)(\]\()(.*)(\))(.*)/;
 // Images
 let regexImage = /(.*)(\!\[)(.*)(\]\()(.*)(\))(.*)/;
 // Blockquotes
@@ -23,6 +23,11 @@ let regexCodeBlockBackQuote = /([\s\S]*)(\`\`\`)([\s\S]*)(\`\`\`)([\s\S]*)/
 let regexCodeBlockTilde = /([\s\S]*)(\~\~\~\~)([\s\S]*)(\~\~\~\~)([\s\S]*)/
 // Headers
 let regexHeader = /(\#+)(.*)([\s\S]*)/
+// Br Headers
+//let regexNewLine = /([\s\S]*)(([^\\])(\n)+)([\s\S]*)/;
+
+let regexNewLineSingle = /([\S\s]+)([^\\])(\n)([\S\s]+)/
+let regexNewLineMultiple = /([\S\s]+)([^\\])(\n)(\n+)([\S\s]+)/
 
 // bullets
 //let regexUnorderedList = /([\s\S]*)([^\S]+)(\-)([\s\S]*)(\n)([\s\S]*)/
