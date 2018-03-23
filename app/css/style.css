@@ -124,6 +124,7 @@ kbd {
     padding-left: 5px;
     /* text-indent: -1em; */
     white-space: nowrap;
+    cursor: default;
 }
 
 .subdir::before {
