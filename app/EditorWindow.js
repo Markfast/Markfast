@@ -17,11 +17,26 @@ class EditorWindow extends BrowserWindow {
             show: false,
             backgroundColor: config.get('background'),
             icon: './resources/logo.ico'
+            // webPreferences: {
+            //     experimentalFeatures: true
+            // }
         });
 
         this.loadURL(`file://${__dirname}/index.html`);
 
         this.on('ready-to-show', () => {
+            // let dpw = config.get('directory-pane-width');
+            // let epw = config.get('editor-pane-width');
+            // let ppw = config.get('preview-pane-width');
+            // if(dpw !== undefined) {
+            //     this.webContents.send('SET_WIDTH', 'directory-pane', dpw);
+            // }
+            // if(epw !== undefined) {
+            //     this.webContents.send('SET_WIDTH', 'editor-pane', epw);
+            // }
+            // if(ppw !== undefined) {
+            //     this.webContents.send('SET_WIDTH', 'preview-pane', ppw);
+            // }
             if(config.get('editor-width') === undefined) {
                 this.maximize();
                 config.set('editor-width', this.getSize()[0]);

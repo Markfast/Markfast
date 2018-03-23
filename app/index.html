@@ -26,6 +26,10 @@
             let config = new Config();
             changeTheme(config.get('theme'));
 
+            // new ResizeObserver(onDirectoryResize).observe(document.getElementById('directory-pane'));
+            // new ResizeObserver(onEditorResize).observe(document.getElementById('editor-pane'));
+            // new ResizeObserver(onPreviewResize).observe(document.getElementById('preview-pane'));
+
             if(config.get('openfile') !== undefined) {
                 var data = fs.readFileSync(config.get('openfile')).toString();
                 document.getElementById('editor-pane').innerHTML = data;
@@ -44,6 +48,12 @@
                 changeTheme(theme);
             });
 
+            // ipcRenderer.on('SET_WIDTH', (event, paneId, width) => {
+            //     console.log(event, document.getElementById(paneId), 'EXPECTED', width);
+            //     document.getElementById(paneId).offsetWidth = width + 'px';
+            //     console.log(event, document.getElementById(paneId), 'ACTUAL', document.getElementById(paneId).offsetWidth);
+            // });
+
             function changeTheme(theme) {
                 if(document.getElementById('theme')) {
                     document.head.removeChild(document.getElementById('theme'));
@@ -54,6 +64,33 @@
                 newTheme.href = `./css/theme_${theme}.css`;
                 document.head.appendChild(newTheme);
             }
+
+            /**
+             * Alerts config of a change to the directory pane's width.
+             * Called by ResizeObserver whenever the directory pane changes its dimensions.
+             */
+            // function onDirectoryResize() {
+            //     config.set('directory-pane-width', document.getElementById('directory-pane').offsetWidth);
+            //     console.log('DP', config.get('directory-pane-width'), document.getElementById('directory-pane').offsetWidth)
+            // }
+
+            /**
+             * Alerts config of a change to the editor pane's width.
+             * Called by ResizeObserver whenever the editor pane changes its dimensions.
+             */
+            // function onEditorResize() {
+            //     config.set('editor-pane-width', document.getElementById('editor-pane').offsetWidth);
+            //     console.log('EP', config.get('editor-pane-width'), document.getElementById('editor-pane').offsetWidth)
+            // }
+
+            /**
+             * Alerts config of a change to the preview pane's width.
+             * Called by ResizeObserver whenever the preview pane changes its dimensions.
+             */
+            // function onPreviewResize() {
+            //     config.set('preview-pane-width', document.getElementById('preview-pane').offsetWidth);
+            //     console.log('PP', config.get('preview-pane-width'), document.getElementById('preview-pane').offsetWidth)
+            // }
         </script>
     </body>
 </html>
