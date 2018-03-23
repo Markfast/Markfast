@@ -53,6 +53,7 @@ function openFile() {
         config.set('openfile', filenames[0]);
         let content = fs.readFile(filenames[0], 'utf-8', (err, data) => {
             mainWindow.webContents.send('SET_EDITOR_CONTENTS', data);
+            loadDirectory(path.join(filenames[0], '..'));
         })
     });
 }
