@@ -14,9 +14,9 @@ let config = new Config();
  * Loads windows and sets initial configs if need be.
  */
 app.on('ready', () => {
-    if(config.get('theme') === undefined) {
-        config.set('theme', 'DARK');
-    }
+    // if(config.get('theme') === undefined) {
+        config.set('theme', 'GITHUB');
+    // }
     if(config.get('cmdorctrl') === undefined) {
         config.set('cmdorctrl', process.platform === 'darwin' ? '&#8984;' : 'Ctrl+');
     }
@@ -203,6 +203,13 @@ const menuTemplate = [
                     type: 'radio',
                     checked: isTheme('LIGHT'),
                     click() {swapTheme('LIGHT');}
+                },
+                {
+                    label: 'GitHub Light',
+                    id: 'GITHUB',
+                    type: 'radio',
+                    checked: isTheme('GITHUB'),
+                    click() {swapTheme('GITHUB');}
                 }
             ]
         },
