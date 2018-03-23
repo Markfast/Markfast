@@ -4,16 +4,16 @@
 }
 
 body, html {
-    background-color: #fbfbfb;
-    color: #111;
-    /* text-shadow: 1px 1px 1px #111; */
+    background-color: #222;
+    color: #DBD6D1;
+    /* text-shadow: 1px 1px 1px #DBD6D1; */
 }
 
 #preview-pane {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   line-height: 1.5;
-  color: #24292e;
+  color: #DBD6D1;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 16px;
   line-height: 1.5;
@@ -102,7 +102,7 @@ body, html {
   overflow: hidden;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid #dfe2e5;
+  border-bottom: 1px solid #DBD6D1;
 }
 
 #preview-pane hr::before {
@@ -210,9 +210,9 @@ body, html {
   font-size: 12px;
 }
 
-#preview-pane .octicon {
+/* #preview-pane .octicon {
   vertical-align: text-bottom;
-}
+} */
 
 /* #preview-pane::before {
   display: table;
@@ -264,14 +264,14 @@ body, html {
   height: 0.25em;
   padding: 0;
   margin: 24px 0;
-  background-color: #e1e4e8;
+  background-color: #DBD6D1;
   border: 0;
 }
 
 #preview-pane blockquote {
   padding: 0 1em;
-  color: #6a737d;
-  border-left: 0.25em solid #dfe2e5;
+  color: #958C82;
+  border-left: 0.25em solid #201D1A;
 }
 
 #preview-pane blockquote>:first-child {
@@ -287,13 +287,13 @@ body, html {
   padding: 3px 5px;
   font-size: 11px;
   line-height: 10px;
-  color: #444d56;
+  color: #BBB2A9;
   vertical-align: middle;
-  background-color: #fafbfc;
-  border: solid 1px #c6cbd1;
-  border-bottom-color: #959da5;
+  background-color: #050403;
+  border: solid 1px #39342E;
+  border-bottom-color: #6A625A;
   border-radius: 3px;
-  box-shadow: inset 0 -1px 0 #959da5;
+  box-shadow: inset 0 -1px 0 #6A625A;
 }
 
 #preview-pane h1,
@@ -320,13 +320,13 @@ body, html {
 #preview-pane h1 {
   padding-bottom: 0.3em;
   font-size: 2em;
-  border-bottom: 1px solid #eaecef;
+  border-bottom: 1px solid #444;
 }
 
 #preview-pane h2 {
   padding-bottom: 0.3em;
   font-size: 1.5em;
-  border-bottom: 1px solid #eaecef;
+  border-bottom: 1px solid #444;
 }
 
 #preview-pane h3 {
@@ -343,7 +343,7 @@ body, html {
 
 #preview-pane h6 {
   font-size: 0.85em;
-  color: #6a737d;
+  color: #958C82;
 }
 
 #preview-pane ul,
@@ -401,22 +401,22 @@ body, html {
 #preview-pane table th,
 #preview-pane table td {
   padding: 6px 13px;
-  border: 1px solid #dfe2e5;
+  border: 1px solid #201D1A;
 }
 
 #preview-pane table tr {
-  background-color: #fff;
-  border-top: 1px solid #c6cbd1;
+  background-color: #000;
+  border-top: 1px solid #39342E;
 }
 
 #preview-pane table tr:nth-child(2n) {
-  background-color: #f6f8fa;
+  background-color: #090705;
 }
 
 #preview-pane img {
   max-width: 100%;
   box-sizing: content-box;
-  background-color: #fff;
+  background-color: #000;
 }
 
 #preview-pane img[align=right] {
@@ -431,7 +431,7 @@ body, html {
   padding: 0.2em 0.4em;
   margin: 0;
   font-size: 85%;
-  background-color: rgba(27,31,35,0.05);
+  background-color: rgba(228, 224, 220, 0.05);
   border-radius: 3px;
 }
 
@@ -464,7 +464,7 @@ body, html {
   overflow: auto;
   font-size: 85%;
   line-height: 1.45;
-  background-color: #f6f8fa;
+  background-color: #090705;
   border-radius: 3px;
 }
 
@@ -490,13 +490,13 @@ body, html {
   padding: 3px 5px;
   font: 11px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
   line-height: 10px;
-  color: #444d56;
+  color: #BBB2A9;
   vertical-align: middle;
-  background-color: #fafbfc;
-  border: solid 1px #d1d5da;
-  border-bottom-color: #c6cbd1;
+  background-color: #050403;
+  border: solid 1px #2E2A25;
+  border-bottom-color: #39342E;
   border-radius: 3px;
-  box-shadow: inset 0 -1px 0 #c6cbd1;
+  box-shadow: inset 0 -1px 0 #39342E;
 }
 
 #preview-pane :checked+.radio-label {
@@ -519,5 +519,5 @@ body, html {
 }
 
 #preview-pane hr {
-  border-bottom-color: #eee;
+  border-bottom-color: #DBD6D1;
 }

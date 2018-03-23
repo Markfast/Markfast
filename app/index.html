@@ -37,7 +37,7 @@
             if(config.get('openfile') !== undefined) {
                 var data = fs.readFileSync(config.get('openfile')).toString();
                 document.getElementById('editor-pane').innerHTML = data;
-                document.getElementById('preview-pane').innerHTML = converter.convertToHTML(data);
+                document.getElementById('preview-pane').innerHTML = converter.convertToHTML('\n' + data);
 
                 let dir = path.join(config.get('openfile'), '..');
                 loadDirectory(dir);
