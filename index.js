@@ -25,7 +25,7 @@ app.on('ready', () => {
     windows.push(mainWindow);
     swapTheme(config.get('theme'))
     let menu = Menu.buildFromTemplate(menuTemplate);
-    mainWindow.setMenu(menu);
+    Menu.setApplicationMenu(menu);
 });
 
 /**
@@ -233,6 +233,8 @@ const menuTemplate = [
     }
 ]
 
-if(process.platform === 'darwin') {
-    menuTemplate.unshift({});
-}
+// if(process.platform === 'darwin') {
+    menuTemplate.unshift({
+        label: 'no'
+    });
+// }
