@@ -14,16 +14,21 @@ let config = new Config();
  * Loads windows and sets initial configs if need be.
  */
 app.on('ready', () => {
+    // INITIAL CONFIGURATIONS
     if(config.get('theme') === undefined) {
         config.set('theme', 'DARK');
     }
     if(config.get('cmdorctrl') === undefined) {
-        config.set('cmdorctrl', process.platform === 'darwin' ? '&#8984;' : 'Ctrl+');
+        let cmdorctrl = process.platform === 'darwin' ? '&#8984;' : 'Ctrl+';
+        console.log(cmdorctrl);
+            config.set('cmdorctrl', cmdorctrl);
     }
+
+    // INITIALIZE WINDOW
     mainWindow = new EditorWindow();
     mainWindow.on('close', () => {app.quit();})
     windows.push(mainWindow);
-    swapTheme(config.get('theme'))
+    swapTheme(config.get('theme'));
     let menu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(menu);
 });
@@ -240,8 +245,6 @@ const menuTemplate = [
     }
 ]
 
-// if(process.platform === 'darwin') {
-    menuTemplate.unshift({
-        label: 'no'
-    });
-// }
+if(process.platform === 'darwin') {
+    menuTemplate.unshift({});
+}

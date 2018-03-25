@@ -38,7 +38,17 @@ function setEditorContents(con) {
  * Should be called every time the editor pane is modified.
  */
 function onEdit() {
-    previewPane.innerHTML = converter.convertToHTML("\n" + editorPane.innerHTML);
+    previewPane.innerHTML = converter.convertToHTML(prepareForParsing(editorPane.innerHTML));
+}
+
+/**
+ * Prepares Markdown text for being parsed and loaded into the HTML preview.
+ * @param {string} text - The contents of the editor pane.
+ * @returns The string, but ready for HTML previewing.
+ */
+function prepareForParsing(text) {
+    return '\n' + text.replace(/&gt;/g, '>').
+        replace(/&lt;/g, '<');
 }
 
 window.addEventListener('keydown', (e) => {
