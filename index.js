@@ -2,11 +2,12 @@ const electron = require('electron');
 const {app, Menu, dialog, ipcMain} = electron;
 const Config = require('electron-config');
 const fs = require('fs');
+const {assignMenu, swapTheme} = require('./app/MenuHelper');
 const EditorWindow = require('./app/EditorWindow');
 const MarkdownGuideWindow = require('./app/MarkdownGuideWindow');
 
 let mainWindow, markdownGuide;
-let windows = [];
+global.windows = [];
 let config = new Config();
 
 /**
@@ -15,6 +16,9 @@ let config = new Config();
  */
 app.on('ready', () => {
     // INITIAL CONFIGURATIONS
+    if(config.get('lang') === undefined) {
+        config.set('lang', 'enUS');
+    }
     if(config.get('theme') === undefined) {
         config.set('theme', 'DARK');
     }
@@ -27,10 +31,9 @@ app.on('ready', () => {
     // INITIALIZE WINDOW
     mainWindow = new EditorWindow();
     mainWindow.on('close', () => {app.quit();})
-    windows.push(mainWindow);
+    global.windows.push(mainWindow);
     swapTheme(config.get('theme'));
-    let menu = Menu.buildFromTemplate(menuTemplate);
-    Menu.setApplicationMenu(menu);
+    assignMenu();
 });
 
 /**
@@ -101,28 +104,6 @@ function saveAs() {
 }
 
 /**
- * Determines whether a theme is the current theme.
- * Used to set the initial radio selection for the theme menu from config.
- * @param {string} id - The theme ID (an ID of `FOO` will use the `theme_FOO` CSS file).
- * @returns {boolean} Whether the given ID matches the theme config.
- */
-function isTheme(id) {
-    return id == config.get('theme');
-}
-
-/**
- * Alerts all active windows to change their theme.
- * Also sets the theme in config.
- * @param {string} id - The theme ID to switch to (an ID of `FOO` will use the `theme_FOO` CSS file).
- */
-function swapTheme(id) {
-    config.set('theme', id);
-    windows.forEach(win => {
-        win.webContents.send('SWAP_THEME', id);
-    })
-}
-
-/**
  * Opens the Markdown Guide window.
  * Opens a new guide window if none are open, or reshows the guide window if it's already open.
  */
@@ -131,119 +112,16 @@ function openMarkdownGuide() {
         markdownGuide = new MarkdownGuideWindow();
         markdownGuide.on('close', () => {
             markdownGuide = null;
-            windows.splice(windows.indexOf(markdownGuide), 1);
+            global.windows.splice(global.windows.indexOf(markdownGuide), 1);
         })
         markdownGuide.setMenu(null);
-        windows.push(markdownGuide);
+        global.windows.push(markdownGuide);
     }
     else {
         markdownGuide.webContents.reloadIgnoringCache();
         markdownGuide.show();
     }
 }
-
-const menuTemplate = [
-    {
-        label: 'File',
-        submenu: [
-            {
-                label: 'New',
-                accelerator: 'CommandOrControl+N',
-                click() {newFile();}
-            },
-            {
-                label: 'Open',
-                accelerator: 'CommandOrControl+O',
-                click() {openFile();}
-            },
-            {type: 'separator'},
-            {
-                label: 'Save',
-                accelerator: 'CommandOrControl+S',
-                click() {save();}
-            },
-            {
-                label: 'Save As...',
-                accelerator: 'CommandOrControl+Shift+S',
-                click() {saveAs();}
-            }
-        ]
-    },
-    {
-        label: 'Edit',
-        submenu: [
-            {role: 'undo'},
-            {role: 'redo'},
-            {type: 'separator'},
-            {role: 'cut'},
-            {role: 'copy'},
-            {role: 'paste'},
-            {role: 'selectall'}
-        ]
-    },
-    {
-      label: 'View',
-      submenu: [
-        {role: 'reload'},
-        {role: 'forcereload'},
-        {
-            label: 'Toggle Developer Tools',
-            accelerator: 'F12',
-            click() {mainWindow.webContents.toggleDevTools();}
-        },
-        {type: 'separator'},
-        {
-            label: 'Theme',
-            submenu: [
-                {
-                    label: 'Dark',
-                    id: 'DARK',
-                    type: 'radio',
-                    checked: isTheme('DARK'),
-                    click() {swapTheme('DARK');}
-                },
-                {
-                    label: 'Light',
-                    id: 'LIGHT',
-                    type: 'radio',
-                    checked: isTheme('LIGHT'),
-                    click() {swapTheme('LIGHT');}
-                },
-                {
-                    label: 'GitHub Dark',
-                    id: 'GITHUB_DARK',
-                    type: 'radio',
-                    checked: isTheme('GITHUB_DARK'),
-                    click() {swapTheme('GITHUB_DARK');}
-                },
-                {
-                    label: 'GitHub Light',
-                    id: 'GITHUB',
-                    type: 'radio',
-                    checked: isTheme('GITHUB'),
-                    click() {swapTheme('GITHUB');}
-                }
-            ]
-        },
-        {role: 'resetzoom'},
-        {role: 'zoomin'},
-        {role: 'zoomout'},
-        {type: 'separator'},
-        {role: 'togglefullscreen'}
-      ]
-    },
-    {
-        label: 'Help',
-        submenu: [
-            {role: 'about'},
-            {
-                label: 'Markdown Guide',
-                accelerator: 'F1',
-                click() {openMarkdownGuide();}
-            }
-        ]
-    }
-]
 
 if(process.platform === 'darwin') {
     menuTemplate.unshift({});
