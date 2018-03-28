@@ -33,5 +33,10 @@
             "about": "Aboutway Arkfastmay",
             "markdownGuide": "Arkdownmay Uidegay"
         }
+    },
+    "langs": {
+        "enUS": "Americanway Englishway",
+        "igpay": "Igpay Atinlay",
+        "lolcat": "Olcatlay"
     }
 }

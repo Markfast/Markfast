@@ -172,6 +172,7 @@ function getLanguagesSubmenu() {
         let l = langs[i];
         langsSubmenu.push({
             label: l.label,
+            sublabel: _(`langs::${l.id}`),
             type: 'radio',
             checked: l.id === config.get('lang'),
             click() {toggleLanguage(l.id);}

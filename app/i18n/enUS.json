@@ -33,5 +33,10 @@
             "about": "About Markfast",
             "markdownGuide": "Markdown Guide"
         }
+    },
+    "langs": {
+        "enUS": "English (US)",
+        "igpay": "Pig Latin",
+        "lolcat": "Lolcat"
     }
 }
