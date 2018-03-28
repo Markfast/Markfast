@@ -4,9 +4,8 @@ const Config = require('electron-config');
 const fs = require('fs');
 const {assignMenu, swapTheme} = require('./app/MenuHelper');
 const EditorWindow = require('./app/EditorWindow');
-const MarkdownGuideWindow = require('./app/MarkdownGuideWindow');
 
-let mainWindow, markdownGuide;
+let mainWindow;
 global.windows = [];
 let config = new Config();
 
@@ -101,26 +100,6 @@ function saveAs() {
             fs.writeFile(filename, con, (error) => {console.log(error)});
         })
     });
-}
-
-/**
- * Opens the Markdown Guide window.
- * Opens a new guide window if none are open, or reshows the guide window if it's already open.
- */
-function openMarkdownGuide() {
-    if(markdownGuide == null) {
-        markdownGuide = new MarkdownGuideWindow();
-        markdownGuide.on('close', () => {
-            markdownGuide = null;
-            global.windows.splice(global.windows.indexOf(markdownGuide), 1);
-        })
-        markdownGuide.setMenu(null);
-        global.windows.push(markdownGuide);
-    }
-    else {
-        markdownGuide.webContents.reloadIgnoringCache();
-        markdownGuide.show();
-    }
 }
 
 if(process.platform === 'darwin') {

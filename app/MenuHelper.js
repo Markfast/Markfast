@@ -3,6 +3,7 @@ const {app, Menu, remote} = electron;
 const Config = require('electron-config');
 const _ = require('./i18n/_i18n');
 const langs = require('./i18n/_langs.json');
+const MarkdownGuideWindow = require('./MarkdownGuideWindow');
 
 let config = new Config();
 
@@ -148,7 +149,7 @@ function assignMenu() {
                     role: 'about'
                 },
                 {
-                    label: _('menu::view::markdownGuide'),
+                    label: _('menu::help::markdownGuide'),
                     accelerator: 'F1',
                     click() {openMarkdownGuide();}
                 }
@@ -209,6 +210,26 @@ function swapTheme(id) {
     global.windows.forEach(win => {
         win.webContents.send('SWAP_THEME', id);
     })
+}
+
+/**
+ * Opens the Markdown Guide window.
+ * Opens a new guide window if none are open, or reshows the guide window if it's already open.
+ */
+function openMarkdownGuide() {
+    if(global.markdownGuide == null) {
+        global.markdownGuide = new MarkdownGuideWindow();
+        global.markdownGuide.on('close', () => {
+            markdownGuide = null;
+            global.windows.splice(global.windows.indexOf(markdownGuide), 1);
+        })
+        global.markdownGuide.setMenu(null);
+        global.windows.push(markdownGuide);
+    }
+    else {
+        markdownGuide.webContents.reloadIgnoringCache();
+        markdownGuide.show();
+    }
 }
 
 module.exports = {
