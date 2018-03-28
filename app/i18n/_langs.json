@@ -8,5 +8,10 @@
         "label": "Igpay Atinlay",
         "id": "igpay",
         "src": "igpay.json"
+    },
+    {
+        "label": "LOLCAT",
+        "id": "lolcat",
+        "src": "lolcat.json"
     }
 ]

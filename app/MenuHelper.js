@@ -123,7 +123,7 @@ function assignMenu() {
                 submenu: getLanguagesSubmenu()
             },
             {
-                label: _('menu::view::resetZoom'),
+                label: _('menu::view::actualSize'),
                 role: 'resetzoom'
             },
             {

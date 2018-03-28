@@ -1,0 +1,37 @@
+{
+    "menu": {
+        "file": {
+            "label": "FIEL",
+            "new": "NU",
+            "open": "OPEN FIEL",
+            "save": "SAVE DIS",
+            "saveAs": "SAVE DIS AS..."
+        },
+        "edit": {
+            "label": "EDITZ",
+            "undo": "UNDO DIS",
+            "redo": "REDO DIS",
+            "cut": "CUT DIS",
+            "copy": "COPY DIS",
+            "paste": "PASTE DIS",
+            "selectAll": "I CAN HAZ ALL?"
+        },
+        "view": {
+            "label": "VIEWZ",
+            "reload": "RELOAD DIS",
+            "forceReload": "RELOAD DIS!!1!",
+            "devTools": "I CAN HAZ DEV TOOLZ?",
+            "theme": "NU LOOKZ",
+            "setLanguage": "TRANSLASHUNZ",
+            "actualSize": "MAK AKSHUL SIEZ",
+            "zoomIn": "MAK BIGGR",
+            "zoomOut": "MAK SMALLR",
+            "fullScreen": "I CAN HAZ ALL SCREEN?"
+        },
+        "help": {
+            "label": "HALP PLZ",
+            "about": "BOUT MARKFAST",
+            "markdownGuide": "BOUT MARKDOWN"
+        }
+    }
+}
