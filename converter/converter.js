@@ -13,7 +13,7 @@ converter.convertToHTML = function(markdown) {
     // Header
     while (regexHeader.test(htmlElement)) {
         function replacer(match, p1, p2, p3, p4, p5, p6) {
-            console.log("1: " + p1, "2: " + p2, "3: " + p3, "4: " + p4, "5: " + p5, "6: " + p6);
+            //console.log("1: " + p1, "2: " + p2, "3: " + p3, "4: " + p4, "5: " + p5, "6: " + p6);
             let headerIndex = p3.length;
             return converter.convertToHTML(p1) + "<h" + headerIndex + ">" + p4 + "</h" + headerIndex + ">" + converter.convertToHTML(p5);
         }
@@ -23,7 +23,7 @@ converter.convertToHTML = function(markdown) {
 
     // New Line
     while(regexNewLineMultiple.test(htmlElement)) {
-        console.log("Here!");
+        //console.log("Here!");
         function replacer(match, p1, p2, p3, p4, p5, p6) {
             // console.log("1: " + p1, "2: " + p2, "3: " + p3, "4: " + p4, "5: " + p5, "6: " + p6);
             return p1 + "<br />" + p4
@@ -38,25 +38,44 @@ converter.convertToHTML = function(markdown) {
         htmlElement = htmlElement.replace(regexNewLineSingle, replacer);
     }
 
+    htmlElement = htmlElement.replaceAll("<br />", "\n");
     // Bold & Italic
-    while (regexBoldAsteriskCheck.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexBoldAsterisk, "$1<b>$3</b>$5");
+    while (regexBoldAsterisk.test(htmlElement)) {
+        function replacer(match, p1, p2, p3, p4, p5, p6, p7) {
+            //console.log("1:", p1, "\n2:", p2, "\n3:", p3, "\n4:", p4, "\n5:", p5, "\n6:", p6, "\n7:", p7);
+            return p1 + "<b>" + p3 + p4 + p5 + "</b>" + p7;
+        }
+        htmlElement = htmlElement.replace(regexBoldAsterisk, replacer);
     }
-    while (regexBoldUnderscoreCheck.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexBoldUnderscore, "$1<b>$3</b>$5");
+    while (regexBoldUnderscore.test(htmlElement)) {
+        function replacer(match, p1, p2, p3, p4, p5, p6, p7) {
+            //console.log("1:", p1, "\n2:", p2, "\n3:", p3, "\n4:", p4, "\n5:", p5, "\n6:", p6, "\n7:", p7);
+            return p1 + "<b>" + p3 + p4 + p5 + "</b>" + p7;
+        }
+        htmlElement = htmlElement.replace(regexBoldUnderscore, replacer);
     }
-    while (regexItalicAsteriskCheck.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexItalicAsterisk, "$1<i>$3</i>$5");
+    console.log(htmlElement);
+    while (regexItalicAsterisk.test(htmlElement)) {
+        function replacer(match, p1, p2, p3, p4, p5, p6, p7, p8) {
+            console.log("1:", p1, "\n2:", p2, "\n3:", p3, "\n4:", p4, "\n5:", p5, "\n6:", p6, "\n7:", p7, "\n8:", p8);
+            return p1 + "<i>" + p3 + p4 + p5 + "</i>" + p7 + p8;
+        }
+        htmlElement = htmlElement.replace(regexItalicAsterisk, replacer);
     }
-    while (regexItalicUnderscoreCheck.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexItalicUnderscore, "$1<i>$3</i>$5");
+    while (regexItalicUnderscore.test(htmlElement)) {
+        function replacer(match, p1, p2, p3, p4, p5, p6, p7, p8) {
+            console.log(p1, "\n", p2, "\n", p3, "\n", p4, "\n", p5, "\n", p6, "\n", p7, "\n", p8);
+            return p1 + "<i>" + p3 + p4 + p5 + "</i>" + p7 + p8;
+        }
+        htmlElement = htmlElement.replace(regexItalicUnderscore, replacer);
     }
-    /*while (regexLink.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexLink, "$1<a href=\"$5\">$3</a>$7");
+    htmlElement = htmlElement.replaceAll("\n", "<br />");
+    while (regexLink.test(htmlElement)) {
+        htmlElement = htmlElement.replace(regexLink, "$1 <a href=\"$6\">$4</a> $8");
     }
     while (regexImage.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexImage, "$1<img src=\"$5\" alt=\"$3\">$7");
-    }*/
+        htmlElement = htmlElement.replace(regexImage, "$1 <img src=\"$6\" alt=\"$4\"> $8");
+    }
     return htmlElement
 }
 converter.appendHTMLElement = function (htmlElement) {
