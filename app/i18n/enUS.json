@@ -1,0 +1,37 @@
+{
+    "menu": {
+        "file": {
+            "label": "File",
+            "new": "New",
+            "open": "Open",
+            "save": "Save",
+            "saveAs": "Save As..."
+        },
+        "edit": {
+            "label": "Edit",
+            "undo": "Undo",
+            "redo": "Redo",
+            "cut": "Cut",
+            "copy": "Copy",
+            "paste": "Paste",
+            "selectAll": "Select All"
+        },
+        "view": {
+            "label": "View",
+            "reload": "Reload",
+            "forceReload": "Force Reload",
+            "devTools": "Toggle Developer Tools",
+            "theme": "Theme",
+            "setLanguage": "Set Language",
+            "actualSize": "Actual Size",
+            "zoomIn": "Zoom In",
+            "zoomOut": "Zoom Out",
+            "fullScreen": "Toggle Full Screen"
+        },
+        "help": {
+            "label": "Help",
+            "about": "About Markfast",
+            "markdownGuide": "Markdown Guide"
+        }
+    }
+}

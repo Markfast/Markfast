@@ -1,0 +1,37 @@
+{
+    "menu": {
+        "file": {
+            "label": "Ilefay",
+            "new": "Ewnay",
+            "open": "Openway",
+            "save": "Avesay",
+            "saveAs": "Avesay Asway..."
+        },
+        "edit": {
+            "label": "Editway",
+            "undo": "Undoway",
+            "redo": "Edoray",
+            "cut": "Utcay",
+            "copy": "Opycay",
+            "paste": "Astepay",
+            "selectAll": "Electsay Allway"
+        },
+        "view": {
+            "label": "Iewvay",
+            "reload": "Eloadray",
+            "forceReload": "Orcefay Eloadray",
+            "devTools": "Oggletay Eveloperday Oolstay",
+            "theme": "Emethay",
+            "setLanguage": "Etsay Anguagelay",
+            "actualSize": "Actualway Izesay",
+            "zoomIn": "Oomzay Inway",
+            "zoomOut": "Oomzay Outway",
+            "fullScreen": "Oggletay Ullfay Eenscray"
+        },
+        "help": {
+            "label": "Elphay",
+            "about": "Aboutway Arkfastmay",
+            "markdownGuide": "Arkdownmay Uidegay"
+        }
+    }
+}
