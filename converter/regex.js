@@ -1,6 +1,5 @@
 // Backslash
-let regexBackslash = /(.*)(\\)(.)(.*)/;
-let regexBackslashCheck = /(.*)(\\.)(.*)/;
+let regexBackslash = /([\s\S]*)(\\)([\S])([\s\S]*)/;
 // Bold
 let regexBoldAsterisk   = /([\s\S]*)(\*\*)(\S)(.+)(\S)(\*\*)([\s\S]*)/;
 let regexBoldUnderscore = /([\s\S]*)(\_\_)(\S)(.+)(\S)(\_\_)([\s\S]*)/;

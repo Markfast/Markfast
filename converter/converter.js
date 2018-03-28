@@ -1,11 +1,35 @@
 let converter = {};
+converter.backslashCharacters = {
+    "\\":"UTOPHER005C",
+    "`": "UTOPHER0060",
+    "*": "UTOPHER002A",
+    "_": "UTOPHER005F",
+    "{": "UTOPHER007B",
+    "}": "UTOPHER007D",
+    "[": "UTOPHER005B",
+    "]": "UTOPHER005D",
+    "(": "UTOPHER0028",
+    ")": "UTOPHER0029",
+    "#": "UTOPHER0023",
+    "+": "UTOPHER002B",
+    "-": "UTOPHER002D",
+    ".": "UTOPHER002E",
+    "!": "UTOPHER0021"
+}
 
 converter.convertToHTML = function(markdown) {
     let htmlElement = markdown;
 
+    while (regexBackslash.test(htmlElement)) {
+        function replacer(match, p1, p2, p3 ,p4) {
+            return p1 + converter.convertBackslashToTopherUnicode(p3) + p4;
+        }
+        htmlElement = htmlElement.replace(regexBackslash, replacer);
+    }
+
     // Header
     while (regexHeader.test(htmlElement)) {
-        function replacer(match, p1, p2, p3, p4, p5, p6) {
+        function replacer(match, p1, p2, p3, p4, p5) {
             let headerIndex = p3.length;
             return converter.convertToHTML(p1) + "<h" + headerIndex + ">" + p4 + "</h" + headerIndex + ">" + converter.convertToHTML(p5);
         }
@@ -29,8 +53,21 @@ converter.convertToHTML = function(markdown) {
     while (regexImage.test(htmlElement)) {htmlElement = htmlElement.replace(regexImage, "$1<img src=\"$6\" alt=\"$4\">$8");}
 
     // Return HTML Element
-    return htmlElement
+    return this.replaceAllTopherUnicodes(htmlElement)
 }
+
+converter.convertBackslashToTopherUnicode = function (character) {
+    if (character in this.backslashCharacters) return this.backslashCharacters[character];
+    else return this.backslashCharacters["\\"] + character;
+}
+converter.replaceAllTopherUnicodes = function (string) {
+    for(var key in this.backslashCharacters) {
+        let value = this.backslashCharacters[key]
+        string = string.replaceAll(value, key);
+    }
+    return string;
+}
+
 converter.appendHTMLElement = function (htmlElement) {
     document.getElementById("test").innerHTML += htmlElement;
 }
