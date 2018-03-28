@@ -9,6 +9,50 @@ body, html {
     /* text-shadow: 1px 1px 1px #111; */
 }
 
+#directory-pane {
+    background-color: #24292e;
+}
+
+.tree-item:hover {
+    background-color: #333;
+    width: 100%;
+}
+
+.parent-dir {
+    color: #777;
+    text-shadow: 1px 1px 1px #777;
+}
+
+.parent-dir::before {
+    color: #777 !important;
+    text-shadow: 1px 1px 1px black;
+}
+
+.subdir {
+    color: #bbb;
+    text-shadow: 1px 1px 1px #bbb;
+}
+
+.subdir::before {
+    color: khaki;
+    text-shadow: 1px 1px 1px black;
+}
+
+.mdfile {
+    color: #bbb;
+    text-shadow: 1px 1px 1px #bbb;
+}
+
+.txtfile {
+    color: #999;
+    text-shadow: 1px 1px 1px #999;
+}
+
+.otherfile {
+    color: #777;
+    text-shadow: 1px 1px 1px #777;
+}
+
 #preview-pane {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;

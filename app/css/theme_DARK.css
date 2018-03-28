@@ -41,8 +41,8 @@ body {
 }
 
 .mdfile {
-    color: orange;
-    text-shadow: 1px 1px 1px orange;
+    color: #bbb;
+    text-shadow: 1px 1px 1px #bbb;
 }
 
 .txtfile {
@@ -53,6 +53,11 @@ body {
 .otherfile {
     color: #777;
     text-shadow: 1px 1px 1px #777;
+}
+
+.tree-item:hover {
+    background-color: #333;
+    width: 100%;
 }
 
 .row {

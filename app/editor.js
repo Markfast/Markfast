@@ -159,6 +159,7 @@ function loadDirectory(dir) {
     up.innerHTML = '..';
     up.onclick = () => {loadDirectory(parent);}
     up.classList.add('subdir');
+    up.classList.add('tree-item');
     up.classList.add('parent-dir');
     tree.appendChild(up);
     fs.readdir(dir, (err, files) => {
@@ -168,6 +169,7 @@ function loadDirectory(dir) {
                 let dirRecord = document.createElement('li');
                 dirRecord.innerHTML = file;
                 dirRecord.onclick = () => {loadDirectory(path.join(dir, file));}
+                dirRecord.classList.add('tree-item');
                 dirRecord.classList.add('subdir');
                 tree.appendChild(dirRecord);
             }
@@ -183,6 +185,7 @@ function loadDirectory(dir) {
                         setEditorContents(data);
                     })
                 }
+                fileRecord.classList.add('tree-item');
                 fileRecord.classList.add('treefile');
                 if(MARKDOWN_EXTENSIONS.indexOf(path.extname(file)) > -1) {
                     fileRecord.classList.add('mdfile');
