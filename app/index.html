@@ -19,10 +19,13 @@
         <div id="preview-pane" class="col"></div>
 
         <script>
+            let directoryPane = document.getElementById('directory-pane');
+            let editorPane = document.getElementById('editor-pane');
+            let previewPane = document.getElementById('preview-pane');
             // document.getElementById('directory-pane').style.width = '15%';
             // document.getElementById('editor-pane').style.width = '50%';
             // document.getElementById('preview-pane').style.width = '35%';
-            const electron = require('electron');
+            // const electron = require('electron');
             const {ipcRenderer} = electron;
             const fs = require('fs');
             const path = require('path');
@@ -36,8 +39,7 @@
 
             if(config.get('openfile') !== undefined) {
                 var data = fs.readFileSync(config.get('openfile')).toString();
-                document.getElementById('editor-pane').innerHTML = data;
-                document.getElementById('preview-pane').innerHTML = converter.convertToHTML('\n' + data);
+                setEditorContents(data);
 
                 let dir = path.join(config.get('openfile'), '..');
                 loadDirectory(dir);

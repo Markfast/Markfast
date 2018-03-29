@@ -1,3 +1,6 @@
+const electron = require('electron');
+const {shell} = electron;
+
 const KEYS = {
     B: 66,
     BACKTICK: 192,
@@ -12,13 +15,7 @@ const KEYS = {
 const MARKDOWN_EXTENSIONS = ['.md', '.markdown', '.markdn', '.mdown'];
 const TEXT_EXTENSIONS = ['', '.txt']
 
-let directoryPane, editorPane, previewPane;
-
 window.onload = function() {
-    directoryPane = document.getElementById('directory-pane');
-    editorPane = document.getElementById('editor-pane');
-    previewPane = document.getElementById('preview-pane');
-
     editorPane.addEventListener('input', onEdit);
     editorPane.addEventListener('paste', onPaste);
 }
@@ -39,6 +36,13 @@ function setEditorContents(con) {
  */
 function onEdit() {
     previewPane.innerHTML = converter.convertToHTML(prepareForParsing(editorPane.innerHTML));
+    let links = previewPane.querySelectorAll('a');
+    links.forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            shell.openExternal(a.getAttribute('href'));
+        });
+    });
 }
 
 /**
