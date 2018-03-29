@@ -8,12 +8,21 @@
     <body style="font-size: smaller;">
         <script>
             const electron = require('electron');
-            const {ipcRenderer} = electron;
+            const {ipcRenderer, shell} = electron;
             const Config = require('electron-config');
             let config = new Config();
             const f1 = 112;
 
             changeTheme(config.get('theme'));
+
+            window.onload = function() {
+                document.querySelectorAll('a').forEach(a => {
+                    a.addEventListener('click', e => {
+                        e.preventDefault();
+                        shell.openExternal(a.getAttribute('href'));
+                    });
+                });
+            }
 
             ipcRenderer.on('SWAP_THEME', (event, theme) => {
                 changeTheme(theme);
