@@ -82,7 +82,11 @@ function assignMenu() {
             {
                 label: _('menu::view::devTools'),
                 accelerator: 'F12',
-                click() {mainWindow.webContents.toggleDevTools();}
+                click() {
+                    for(let i = 0; i < global.windows.length; i++) {
+                        global.windows[i].toggleDevTools();
+                    }
+                }
             },
             {type: 'separator'},
             {
@@ -155,7 +159,11 @@ function assignMenu() {
                 }
             ]
         }
-    ]
+    ];
+
+    if(process.platform === 'darwin') {
+        menuTemplate.unshift({});
+    }
 
     let menu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(menu);

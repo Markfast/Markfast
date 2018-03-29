@@ -5,7 +5,6 @@ const fs = require('fs');
 const {assignMenu, swapTheme} = require('./app/MenuHelper');
 const EditorWindow = require('./app/EditorWindow');
 
-let mainWindow;
 global.windows = [];
 let config = new Config();
 
@@ -28,8 +27,8 @@ app.on('ready', () => {
     }
 
     // INITIALIZE WINDOW
-    mainWindow = new EditorWindow();
-    mainWindow.on('close', () => {app.quit();})
+    global.mainWindow = new EditorWindow();
+    global.mainWindow.on('close', () => {app.quit();})
     global.windows.push(mainWindow);
     swapTheme(config.get('theme'));
     assignMenu();
@@ -40,7 +39,7 @@ app.on('ready', () => {
  * Clears editor and removes current file from config.
  */
 function newFile() {
-    mainWindow.webContents.send('SET_EDITOR_CONTENTS', '');
+    global.mainWindow.webContents.send('SET_EDITOR_CONTENTS', '');
     config.delete('openfile')
 }
 
@@ -59,7 +58,7 @@ function openFile() {
         if(filenames === undefined) return;
         config.set('openfile', filenames[0]);
         let content = fs.readFile(filenames[0], 'utf-8', (err, data) => {
-            mainWindow.webContents.send('SET_EDITOR_CONTENTS', data);
+            global.mainWindow.webContents.send('SET_EDITOR_CONTENTS', data);
             loadDirectory(path.join(filenames[0], '..'));
         })
     });
@@ -74,7 +73,7 @@ function save() {
         saveAs();
     }
     else {
-        mainWindow.webContents.send('GET_EDITOR_CONTENTS');
+        global.mainWindow.webContents.send('GET_EDITOR_CONTENTS');
         ipcMain.once('GET_EDITOR_CONTENTS2', (event, con) => {
             fs.writeFile(config.get('openfile'), con, (error) => {console.log(error)});
         });
@@ -95,13 +94,9 @@ function saveAs() {
     }, filename => {
         if(filename === undefined) return;
         config.set('openfile', filename);
-        mainWindow.webContents.send('GET_EDITOR_CONTENTS');
+        global.mainWindow.webContents.send('GET_EDITOR_CONTENTS');
         ipcMain.once('GET_EDITOR_CONTENTS2', (event, con) => {
             fs.writeFile(filename, con, (error) => {console.log(error)});
         })
     });
-}
-
-if(process.platform === 'darwin') {
-    menuTemplate.unshift({});
 }
