@@ -1,64 +1,73 @@
 let converter = {};
+converter.backslashCharacters = {
+    "\\":"UTOPHER005C",
+    "`": "UTOPHER0060",
+    "*": "UTOPHER002A",
+    "_": "UTOPHER005F",
+    "{": "UTOPHER007B",
+    "}": "UTOPHER007D",
+    "[": "UTOPHER005B",
+    "]": "UTOPHER005D",
+    "(": "UTOPHER0028",
+    ")": "UTOPHER0029",
+    "#": "UTOPHER0023",
+    "+": "UTOPHER002B",
+    "-": "UTOPHER002D",
+    ".": "UTOPHER002E",
+    "!": "UTOPHER0021"
+}
 
 converter.convertToHTML = function(markdown) {
     let htmlElement = markdown;
 
-    // Header
-    /*while (tophetest.test(htmlElement)) {
-        console.log("Here");
-        htmlElement = htmlElement.replace(tophetest, "TEST!!!!");
-        return htmlElement;
-    }*/
+    while (regexBackslash.test(htmlElement)) {
+        function replacer(match, p1, p2, p3 ,p4) {
+            return p1 + converter.convertBackslashToTopherUnicode(p3) + p4;
+        }
+        htmlElement = htmlElement.replace(regexBackslash, replacer);
+    }
 
     // Header
     while (regexHeader.test(htmlElement)) {
-        function replacer(match, p1, p2, p3, p4, p5, p6) {
-            console.log("1: " + p1, "2: " + p2, "3: " + p3, "4: " + p4, "5: " + p5, "6: " + p6);
+        function replacer(match, p1, p2, p3, p4, p5) {
             let headerIndex = p3.length;
             return converter.convertToHTML(p1) + "<h" + headerIndex + ">" + p4 + "</h" + headerIndex + ">" + converter.convertToHTML(p5);
         }
-        htmlElement = htmlElement.replace(regexHeader, replacer);
-        return htmlElement;
+        return htmlElement.replace(regexHeader, replacer);
     }
 
     // New Line
-    while(regexNewLineMultiple.test(htmlElement)) {
-        console.log("Here!");
-        function replacer(match, p1, p2, p3, p4, p5, p6) {
-            // console.log("1: " + p1, "2: " + p2, "3: " + p3, "4: " + p4, "5: " + p5, "6: " + p6);
-            return p1 + "<br />" + p4
-        }
-        htmlElement = htmlElement.replace(regexNewLineMultiple, replacer);
-    }
-    while(regexNewLineSingle.test(htmlElement)) {
-        function replacer(match, p1, p2, p3, p4) {
-            // console.log("1: " + p1, "2: " + p2, "3: " + p3, "4: " + p4);
-            return p1 + p3
-        }
-        htmlElement = htmlElement.replace(regexNewLineSingle, replacer);
-    }
+    while(regexNewLineMultiple.test(htmlElement)) {htmlElement = htmlElement.replace(regexNewLineMultiple, "$1<br />$4");}
+    while(regexNewLineSingle.test(htmlElement)) {htmlElement = htmlElement.replace(regexNewLineSingle, "$1$3");}
 
     // Bold & Italic
-    while (regexBoldAsteriskCheck.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexBoldAsterisk, "$1<b>$3</b>$5");
-    }
-    while (regexBoldUnderscoreCheck.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexBoldUnderscore, "$1<b>$3</b>$5");
-    }
-    while (regexItalicAsteriskCheck.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexItalicAsterisk, "$1<i>$3</i>$5");
-    }
-    while (regexItalicUnderscoreCheck.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexItalicUnderscore, "$1<i>$3</i>$5");
-    }
-    /*while (regexLink.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexLink, "$1<a href=\"$5\">$3</a>$7");
-    }
-    while (regexImage.test(htmlElement)) {
-        htmlElement = htmlElement.replace(regexImage, "$1<img src=\"$5\" alt=\"$3\">$7");
-    }*/
-    return htmlElement
+    htmlElement = htmlElement.replaceAll("<br />", "\n");
+    while (regexBoldAsterisk.test(htmlElement)) {htmlElement = htmlElement.replace(regexBoldAsterisk, "$1<b>$3$4$5</b>$7");}
+    while (regexBoldUnderscore.test(htmlElement)) {htmlElement = htmlElement.replace(regexBoldUnderscore, "$1<b>$3$4$5</b>$7");}
+    while (regexItalicAsterisk.test(htmlElement)) {htmlElement = htmlElement.replace(regexItalicAsterisk, "$1<i>$3$4$5</i>$7$8");}
+    while (regexItalicUnderscore.test(htmlElement)) {htmlElement = htmlElement.replace(regexItalicUnderscore, "$1<i>$3$4$5</i>$7$8");}
+    htmlElement = htmlElement.replaceAll("\n", "<br />");
+
+    // Links & Images
+    while (regexLink.test(htmlElement)) {htmlElement = htmlElement.replace(regexLink, "$1$2<a href=\"$6\">$4</a>$8");}
+    while (regexImage.test(htmlElement)) {htmlElement = htmlElement.replace(regexImage, "$1<img src=\"$6\" alt=\"$4\">$8");}
+
+    // Return HTML Element
+    return this.replaceAllTopherUnicodes(htmlElement)
 }
+
+converter.convertBackslashToTopherUnicode = function (character) {
+    if (character in this.backslashCharacters) return this.backslashCharacters[character];
+    else return this.backslashCharacters["\\"] + character;
+}
+converter.replaceAllTopherUnicodes = function (string) {
+    for(var key in this.backslashCharacters) {
+        let value = this.backslashCharacters[key]
+        string = string.replaceAll(value, key);
+    }
+    return string;
+}
+
 converter.appendHTMLElement = function (htmlElement) {
     document.getElementById("test").innerHTML += htmlElement;
 }
