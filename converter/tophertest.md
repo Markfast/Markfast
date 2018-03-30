@@ -71,6 +71,17 @@ _This sentence is in italics with __bold__ nested __inside__ of __it using under
 
 __This sentence is in bold with _italics_ nested _inside_ of _it using underscores.___
 
+## Code Block with BackQuote
+```
+This is a Code Block
+**Where this should not apply**
+__Or__ This!
+```
+
+## Code Test
+This is a `Code` Test
+
+
 ## Link test
 Let's Go to [Github](https://github.com/) to learn!
 
