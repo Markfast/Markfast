@@ -20,6 +20,26 @@ converter.backslashCharacters = {
 converter.convertToHTML = function(markdown) {
     let htmlElement = markdown;
 
+    while (regexCodeBlockBackQuote.test(htmlElement)) {
+        function replacer(match, p1, p2, p3, p4, p5) {
+            return converter.convertToHTML(p1) + "<pre><code>" + p3 + "</code></pre>" + converter.convertToHTML(p5);
+        }
+        return htmlElement.replace(regexCodeBlockBackQuote, replacer);
+    }
+    /*while (regexCodeBlockTilde.test(htmlElement)) {  TODO: Tildes do not work in editor
+        function replacer(match, p1, p2, p3, p4, p5) {
+            return converter.convertToHTML(p1) + "<pre><code>" + p3 + "</code></pre>" + converter.convertToHTML(p5);
+        }
+        return htmlElement.replace(regexCodeBlockBackQuote, replacer);
+    }*/
+    while (regexCode.test(htmlElement)) {
+        function replacer(match, p1, p2, p3, p4, p5) {
+            return converter.convertToHTML(p1) + "<code>" + p3 + "</code>" + converter.convertToHTML(p5);
+        }
+        htmlElement = htmlElement.replace(regexCode, replacer);
+        return htmlElement;
+    }
+
     while (regexBackslash.test(htmlElement)) {
         function replacer(match, p1, p2, p3 ,p4) {
             return p1 + converter.convertBackslashToTopherUnicode(p3) + p4;
@@ -63,6 +83,7 @@ converter.convertBackslashToTopherUnicode = function (character) {
 converter.replaceAllTopherUnicodes = function (string) {
     for(var key in this.backslashCharacters) {
         let value = this.backslashCharacters[key]
+        console.log("Key:", key, "\nValue:", value);
         string = string.replaceAll(value, key);
     }
     return string;
