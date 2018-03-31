@@ -35,12 +35,6 @@ function setEditorContents(con) {
  * Should be called every time the editor pane is modified.
  */
 function onEdit() {
-    // console.log('Open', config.get('openfile'));
-    // console.log('Dir', path.join(config.get('openfile'), '..'))
-    // console.log(path.resolve(__dirname, path.join(config.get('openfile'), '..')));
-    // console.log(path.join(__dirname, '..'));
-    // let resolved = path.resolve(__dirname, config.get('openfile'));
-    // console.log('Resolved', resolved);
     previewPane.innerHTML = converter.convertToHTML(prepareForParsing(editorPane.innerHTML), path.relative(__dirname, config.get('openfile')));
     let links = previewPane.querySelectorAll('a');
     links.forEach(a => {
@@ -49,8 +43,6 @@ function onEdit() {
             shell.openExternal(a.getAttribute('href'));
         });
     });
-
-    console.log(previewPane.querySelectorAll('img'))
 }
 
 /**
@@ -102,6 +94,13 @@ window.addEventListener('keydown', (e) => {
             e.preventDefault();
             insertAroundCaret('(', ')');
         }
+        onEdit();
+    }
+}, false);
+
+window.addEventListener('paste', e => {
+    let focused = document.querySelector(':focus');
+    if(focused === editorPane) {
         onEdit();
     }
 }, false);
