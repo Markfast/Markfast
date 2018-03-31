@@ -30,9 +30,9 @@ __ This __ should not work.
 
 *This * should not work.
 
-* This* should not work.
+This * should* not work.
 
-* This * should not work.
+This * should * not work.
 
 ## Italic test with Underscore
 _All Italic._
