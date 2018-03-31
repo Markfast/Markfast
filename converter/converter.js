@@ -1,3 +1,5 @@
+let isUrl = require('is-url');
+
 let converter = {};
 converter.breakTag = "<br />";
 converter.backslashCharacters = {
@@ -82,7 +84,10 @@ converter.convertToHTML = function(markdown, dir) {
 
     // Links & Images
     while (regexLink.test(htmlElement)) {htmlElement = htmlElement.replace(regexLink, "$1$2<a href=\"$6\">$4</a>$8");}
-    while (regexImage.test(htmlElement)) {htmlElement = htmlElement.replace(regexImage, "$1<img src=\"" + path.join(dir, "$6") + "\" alt=\"$4\">$8");}
+    while (regexImage.test(htmlElement)) {
+        let imgSrc = htmlElement.replace(regexImage, "$6");
+        htmlElement = htmlElement.replace(regexImage, "$1<img src=\"" + (isUrl(imgSrc) ? imgSrc : path.join(dir, '..', "$6")) + "\" alt=\"$4\">$8");
+    }
 
     // Brute Force Bullets
     //htmlElement = this.parseBullets(htmlElement);

@@ -35,7 +35,7 @@ function setEditorContents(con) {
  * Should be called every time the editor pane is modified.
  */
 function onEdit() {
-    previewPane.innerHTML = converter.convertToHTML(prepareForParsing(editorPane.innerHTML));
+    previewPane.innerHTML = converter.convertToHTML(prepareForParsing(editorPane.innerHTML), path.relative(__dirname, config.get('openfile')));
     let links = previewPane.querySelectorAll('a');
     links.forEach(a => {
         a.addEventListener('click', e => {
@@ -94,6 +94,13 @@ window.addEventListener('keydown', (e) => {
             e.preventDefault();
             insertAroundCaret('(', ')');
         }
+        onEdit();
+    }
+}, false);
+
+window.addEventListener('paste', e => {
+    let focused = document.querySelector(':focus');
+    if(focused === editorPane) {
         onEdit();
     }
 }, false);
