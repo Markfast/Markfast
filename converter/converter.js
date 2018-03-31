@@ -20,6 +20,9 @@ converter.backslashCharacters = {
     "!": "UTOPHER0021"
 }
 
+/**
+ * NOTE: Conversions are happening in a specific order. DO NOT Rearrange file!
+ */
 converter.convertToHTML = function(markdown, dir) {
     if (dir === undefined) dir = "";
     let htmlElement = markdown;
@@ -70,6 +73,9 @@ converter.convertToHTML = function(markdown, dir) {
         return htmlElement.replace(regexBlockquote, replacer);
     }
 
+    // Brute Force Bullets
+    htmlElement = this.parseBullets(htmlElement);
+
     // New Line
     while(regexNewLineMultiple.test(htmlElement)) {htmlElement = htmlElement.replace(regexNewLineMultiple, `$1${this.breakTag}$4`);}
     while(regexNewLineSingle.test(htmlElement)) {htmlElement = htmlElement.replace(regexNewLineSingle, "$1$3");}
@@ -89,16 +95,13 @@ converter.convertToHTML = function(markdown, dir) {
         htmlElement = htmlElement.replace(regexImage, "$1<img src=\"" + (isUrl(imgSrc) ? imgSrc : path.join(dir, '..', "$6")) + "\" alt=\"$4\">$8");
     }
 
-    // Brute Force Bullets
-    //htmlElement = this.parseBullets(htmlElement);
-
     // Return HTML Element
     return this.replaceAllTopherUnicodes(htmlElement)
 }
 
 // Parse Functions
 converter.parseBullets = function (string) {
-    let lines = string.split(this.breakTag),
+    let lines = string.split("\n"),
         returnString = "",
         heightOfTable = 0,
         currentListType = "",
@@ -106,41 +109,42 @@ converter.parseBullets = function (string) {
 
     for (var lineNumber = 0; lineNumber < lines.length; lineNumber++) {
         let lineObject = this.getLineObject(lines[lineNumber]);
+        if (lineObject["type"] == "empty") {lineObject["height"] = heightOfTable;}
 
-        if (lineObject["type"]) {
-            if (currentListType == "ordered") returnString += "<\ol>";
-            else if (currentListType == "unordered") returnString += "<\li>";
+        if (lineObject["type"] == "ordered" || lineObject["type"] == "unordered") {
+            console.log('(lineObject["type"] == "ordered" || lineObject["type"] == "unordered")', lineObject);
+            //if (currentListType == "ordered" || currentListType == "unordered") returnString += "<\li>";
+            currentListType = lineObject["type"];
 
-            if (lineObject["spaces"] > heightOfTable) {
-                heightOfTable = lineObject["spaces"];
-                returnString += "<ul>";
+            if (lineObject["height"] > heightOfTable) {
+                if (currentListType == "ordered") {returnString += "<ol>";}
+                else if (currentListType == "unordered") {returnString += "<ul>";}
+                heightOfTable = lineObject["height"];
                 tableOpen++;
             }
-            else if (lineObject["spaces"] < heightOfTable) {
-                heightOfTable = lineObject["spaces"];
-                returnString += "</ul>";
+            else if (lineObject["height"] < heightOfTable) {
+                if (currentListType == "ordered") {returnString += "</ol>";}
+                else if (currentListType == "unordered") {returnString += "</ul>";}
+                heightOfTable = lineObject["height"];
                 tableOpen--;
             }
-
-            if (lineObject["type"] == "ordered") {
-                currentListType = "ordered";
-                returnString += "<li>" + lineObject["line"];
-            }
-            else if (lineObject["type"] == "unordered") {
-                currentListType = "unordered";
-                returnString += "<ol>" + lineObject["line"];
-            }
+            returnString += "<li>" + lineObject["line"] + "\n";
         }
-        else if (lineObject["spaces"] == heightOfTable && tableOpen > 0) {
-            returnString += lineObject["line"];
+        else if (lineObject["height"] == heightOfTable && tableOpen > 0) {
+            console.log('(lineObject["height"] == heightOfTable && tableOpen > 0)', lineObject);
+            returnString += lineObject["line"] + "\n";
         }
-        else if (tableOpen > 0) {
+        else if (tableOpen > 0) { // lineObject["height"] != heightOfTable
+            console.log('(tableOpen > 0)', lineObject);
             tableOpen--;
-            if (currentListType == "ordered") returnString += "<\ol></ul>";
-            else if (currentListType == "unordered") returnString += "<\li></ul>";
+            heightOfTable = lineObject["height"];
+            if (currentListType == "ordered") returnString += lineObject["line"] + "</li></ol>";
+            else if (currentListType == "unordered") returnString += lineObject["line"] + "</li></ul>";
+            returnString += lineObject["line"] + "\n";
         }
         else {
-            returnString += lineObject["line"] + "<br />";
+            console.log('else', lineObject);
+            returnString += lineObject["line"] + "\n";
         }
     }
     return returnString;
@@ -148,14 +152,15 @@ converter.parseBullets = function (string) {
 converter.getLineObject = function (line) {
     let spaces = 0;
     if (line == undefined) return false;
+    if (line == "") return {"type": "empty", "height": 0, "line": line};
     for (let i = 0; i < line.length; i++) {
         if (line[i] == " ") spaces++;
-        else if (line[i] == "-" && line[i+1] == " ") return {"type": "unordered", "spaces": spaces, "line": line.replace("-", "")}
-        else if (line[i] == "*" && line[i+1] == " ") return {"type": "unordered", "spaces": spaces, "line": line.replace("*", "")}
-        else if (/(\d)+/.test(line[i]) && line[i+1] == "." && line[i+2] == " ") return {"type": "ordered", "spaces": spaces, "line": line.replace(/\d\./, "")};
-        else return {"type": false, "spaces": spaces, "line": line};
+        else if (line[i] == "-" && line[i+1] == " ") return {"type": "unordered", "height": spaces+2, "line": line.replace("-", "")}
+        else if (line[i] == "*" && line[i+1] == " ") return {"type": "unordered", "height": spaces+2, "line": line.replace("*", "")}
+        else if (/(\d)+/.test(line[i]) && line[i+1] == "." && line[i+2] == " ") return {"type": "ordered", "height": spaces+2, "line": line.replace(/\d\./, "")};
+        else return {"type": false, "height": spaces, "line": line};
     }
-    return {"type": false, "spaces": spaces, "line": line};
+    return {"type": false, "height": spaces, "line": line};
 }
 
 // Topher's Unicode
