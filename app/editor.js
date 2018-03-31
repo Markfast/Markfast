@@ -62,7 +62,7 @@ window.addEventListener('keydown', (e) => {
             e.preventDefault();
             insertAtCaret('\t', false);
         }
-        else if(e.keyCode == KEYS.BACKTICK) {
+        else if(e.keyCode == KEYS.BACKTICK && !(e.shiftKey)) {
             e.preventDefault();
             insertAroundCaret('`', '`');
         }
