@@ -22,6 +22,7 @@
             let directoryPane = document.getElementById('directory-pane');
             let editorPane = document.getElementById('editor-pane');
             let previewPane = document.getElementById('preview-pane');
+            let tree = document.getElementById('tree');
             // document.getElementById('directory-pane').style.width = '15%';
             // document.getElementById('editor-pane').style.width = '50%';
             // document.getElementById('preview-pane').style.width = '35%';
@@ -37,10 +38,10 @@
             // new ResizeObserver(onPreviewResize).observe(document.getElementById('preview-pane'));
 
             if(config.get('openfile') !== undefined) {
-                var data = fs.readFileSync(config.get('openfile')).toString();
+                var data = fs.readFileSync(path.join(__dirname, config.get('openfile'))).toString();
                 setEditorContents(data);
 
-                let dir = path.join(config.get('openfile'), '..');
+                let dir = path.join(__dirname, config.get('openfile'), '..');
                 loadDirectory(dir);
             }
 
@@ -54,6 +55,56 @@
 
             ipcRenderer.on('SWAP_THEME', (event, theme) => {
                 changeTheme(theme);
+            });
+
+            ipcRenderer.on('LOAD_DIR', (event, dir) => {
+                tree.innerHTML = '';
+                let parent = path.join(dir, '..');
+                let up = document.createElement('li');
+                up.innerHTML = '..';
+                up.onclick = () => {loadDirectory(parent);}
+                up.classList.add('subdir');
+                up.classList.add('tree-item');
+                up.classList.add('parent-dir');
+                tree.appendChild(up);
+                fs.readdir(dir, (err, files) => {
+                    // SUBDIRECTORIES FIRST
+                    files.forEach(file => {
+                        if(fs.statSync(path.join(dir, file)).isDirectory()) {
+                            let dirRecord = document.createElement('li');
+                            dirRecord.innerHTML = file;
+                            dirRecord.onclick = () => {loadDirectory(path.join(dir, file));}
+                            dirRecord.classList.add('tree-item');
+                            dirRecord.classList.add('subdir');
+                            tree.appendChild(dirRecord);
+                        }
+                    });
+                    // THEN FILES
+                    files.forEach(file => {
+                        if(!fs.statSync(path.join(dir, file)).isDirectory()) {
+                            let fileRecord = document.createElement('li');
+                            fileRecord.innerHTML = file;
+                            fileRecord.onclick = () => {
+                                config.set('openfile', path.join(dir, file));
+                                let content = fs.readFile(path.join(dir, file), 'utf-8', (err, data) => {
+                                    setEditorContents(data);
+                                })
+                            }
+                            fileRecord.classList.add('tree-item');
+                            fileRecord.classList.add('treefile');
+                            if(MARKDOWN_EXTENSIONS.indexOf(path.extname(file)) > -1) {
+                                fileRecord.classList.add('mdfile');
+                            }
+                            else if(TEXT_EXTENSIONS.indexOf(path.extname(file)) > -1) {
+                                fileRecord.classList.add('txtfile');
+                            }
+                            else {
+                                fileRecord.classList.add('otherfile');
+                            }
+                            tree.appendChild(fileRecord);
+                        }
+                    });
+                });
             });
 
             // ipcRenderer.on('SET_WIDTH', (event, paneId, width) => {

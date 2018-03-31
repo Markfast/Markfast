@@ -1,6 +1,7 @@
 const electron = require('electron');
-const {app, Menu, remote, dialog} = electron;
+const {app, Menu, remote, dialog, ipcMain} = electron;
 const fs = require('fs');
+const path = require('path');
 const Config = require('electron-config');
 const _ = require('./i18n/_i18n');
 const langs = require('./i18n/_langs.json');
@@ -264,11 +265,13 @@ function openFile() {
         ]
     }, filenames => {
         if(filenames === undefined) return;
-        console.log(filenames[0]);
-        config.set('openfile', filenames[0]);
+        // console.log('File', filenames[0]);
+        // console.log('Dir', __dirname);
+        // console.log('Rel', path.relative(__dirname, path.join(filenames[0], '..')));
+        config.set('openfile', path.relative(__dirname, filenames[0]));
         let content = fs.readFile(filenames[0], 'utf-8', (err, data) => {
             global.mainWindow.webContents.send('SET_EDITOR_CONTENTS', data);
-            // loadDirectory(path.join(filenames[0], '..'));
+            global.mainWindow.webContents.send('LOAD_DIR', path.join(__dirname, config.get('openfile')));
         })
     });
 }
@@ -284,7 +287,7 @@ function save() {
     else {
         global.mainWindow.webContents.send('GET_EDITOR_CONTENTS');
         ipcMain.once('GET_EDITOR_CONTENTS2', (event, con) => {
-            fs.writeFile(config.get('openfile'), con, (error) => {console.log(error)});
+            fs.writeFile(path.join(__dirname, config.get('openfile')), con, (error) => {console.log(error)});
         });
     }
 }

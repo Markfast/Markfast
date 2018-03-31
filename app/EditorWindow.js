@@ -12,10 +12,11 @@ class EditorWindow extends BrowserWindow {
      * @param {string} url - the filepath of the initial Markdown file to load.
      */
     constructor(url) {
+        let icon = process.platform === 'darwin' ? '.resources/logo.ico.icns' : './resources/logo.ico';
         super({
             show: true,
             backgroundColor: config.get('background'),
-            icon: './resources/logo.ico'
+            icon
             // webPreferences: {
             //     experimentalFeatures: true
             // }

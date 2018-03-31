@@ -24,7 +24,7 @@ app.on('ready', () => {
         console.log(cmdorctrl);
             config.set('cmdorctrl', cmdorctrl);
     }
-    config.delete('openfile');
+    // config.delete('openfile')
 
     // INITIALIZE WINDOW
     global.mainWindow = new EditorWindow();

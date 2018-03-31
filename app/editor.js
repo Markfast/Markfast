@@ -1,5 +1,5 @@
 const electron = require('electron');
-const {shell} = electron;
+const {shell, remote} = electron;
 
 const KEYS = {
     B: 66,
@@ -35,7 +35,7 @@ function setEditorContents(con) {
  * Should be called every time the editor pane is modified.
  */
 function onEdit() {
-    previewPane.innerHTML = converter.convertToHTML(prepareForParsing(editorPane.innerHTML), path.relative(__dirname, config.get('openfile')));
+    previewPane.innerHTML = converter.convertToHTML(prepareForParsing(editorPane.innerHTML), path.join(config.get('openfile'), '..'));
     let links = previewPane.querySelectorAll('a');
     links.forEach(a => {
         a.addEventListener('click', e => {
