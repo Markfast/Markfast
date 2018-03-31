@@ -84,7 +84,6 @@ converter.convertBackslashToTopherUnicode = function (character) {
 converter.replaceAllTopherUnicodes = function (string) {
     for(var key in this.backslashCharacters) {
         let value = this.backslashCharacters[key]
-        console.log("Key:", key, "\nValue:", value);
         string = string.replaceAll(value, key);
     }
     return string;
