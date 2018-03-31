@@ -17,7 +17,8 @@ converter.backslashCharacters = {
     "!": "UTOPHER0021"
 }
 
-converter.convertToHTML = function(markdown) {
+converter.convertToHTML = function(markdown, dir) {
+    if (dir === undefined) dir = "";
     let htmlElement = markdown;
 
     while (regexCodeBlockBackQuote.test(htmlElement)) {
@@ -26,12 +27,12 @@ converter.convertToHTML = function(markdown) {
         }
         return htmlElement.replace(regexCodeBlockBackQuote, replacer);
     }
-    /*while (regexCodeBlockTilde.test(htmlElement)) {  TODO: Tildes do not work in editor
+    while (regexCodeBlockTilde.test(htmlElement)) {
         function replacer(match, p1, p2, p3, p4, p5) {
             return converter.convertToHTML(p1) + "<pre><code>" + p3 + "</code></pre>" + converter.convertToHTML(p5);
         }
-        return htmlElement.replace(regexCodeBlockBackQuote, replacer);
-    }*/
+        return htmlElement.replace(regexCodeBlockTilde, replacer);
+    }
     while (regexCode.test(htmlElement)) {
         function replacer(match, p1, p2, p3, p4, p5) {
             return converter.convertToHTML(p1) + "<code>" + p3 + "</code>" + converter.convertToHTML(p5);
@@ -70,7 +71,7 @@ converter.convertToHTML = function(markdown) {
 
     // Links & Images
     while (regexLink.test(htmlElement)) {htmlElement = htmlElement.replace(regexLink, "$1$2<a href=\"$6\">$4</a>$8");}
-    while (regexImage.test(htmlElement)) {htmlElement = htmlElement.replace(regexImage, "$1<img src=\"$6\" alt=\"$4\">$8");}
+    while (regexImage.test(htmlElement)) {htmlElement = htmlElement.replace(regexImage, "$1<img src=\"" + path.join(dir, "$6") + "\" alt=\"$4\">$8");}
 
     // Return HTML Element
     return this.replaceAllTopherUnicodes(htmlElement)
