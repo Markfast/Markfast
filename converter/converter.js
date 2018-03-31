@@ -112,7 +112,6 @@ converter.parseBullets = function (string) {
         if (lineObject["type"] == "empty") {lineObject["height"] = heightOfTable;}
 
         if (lineObject["type"] == "ordered" || lineObject["type"] == "unordered") {
-            console.log('(lineObject["type"] == "ordered" || lineObject["type"] == "unordered")', lineObject);
             currentListType = lineObject["type"];
 
             if (lineObject["height"] > heightOfTable) {
@@ -130,18 +129,15 @@ converter.parseBullets = function (string) {
             returnString += "<li>" + lineObject["line"] + "\n";
         }
         else if (lineObject["height"] == heightOfTable && tableOpen > 0) {
-            console.log('(lineObject["height"] == heightOfTable && tableOpen > 0)', lineObject);
             returnString += lineObject["line"] + "\n";
         }
         else if (tableOpen > 0) { // lineObject["height"] != heightOfTable
-            console.log('(tableOpen > 0)', lineObject);
             tableOpen--;
             heightOfTable = lineObject["height"];
             if (currentListType == "ordered") returnString += " " + lineObject["line"] + "</li></ol>";
             else if (currentListType == "unordered") returnString += " " + lineObject["line"] + "</li></ul>";
         }
         else {
-            console.log('else', lineObject);
             returnString += lineObject["line"] + "\n";
         }
     }
