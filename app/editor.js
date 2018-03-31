@@ -39,9 +39,9 @@ function onEdit() {
     // console.log('Dir', path.join(config.get('openfile'), '..'))
     // console.log(path.resolve(__dirname, path.join(config.get('openfile'), '..')));
     // console.log(path.join(__dirname, '..'));
-    let resolved = path.resolve(__dirname, config.get('openfile'));
-    console.log('Resolved', resolved);
-    previewPane.innerHTML = converter.convertToHTML(prepareForParsing(editorPane.innerHTML), resolved);
+    // let resolved = path.resolve(__dirname, config.get('openfile'));
+    // console.log('Resolved', resolved);
+    previewPane.innerHTML = converter.convertToHTML(prepareForParsing(editorPane.innerHTML), path.relative(__dirname, config.get('openfile')));
     let links = previewPane.querySelectorAll('a');
     links.forEach(a => {
         a.addEventListener('click', e => {
