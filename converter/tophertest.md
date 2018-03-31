@@ -78,9 +78,22 @@ This is a Code Block
 __Or__ This!
 ```
 
+## Code Block with Tilde
+~~~~
+This is a Code Block
+**Where this should not apply**
+__Or__ This!
+~~~~
+
 ## Code Test
 This is a `Code` Test
 
+## BlockQuote Test
+This is a...
+&gt; Block Quote
+Test
+
+Yay Tests!!!
 
 ## Link test
 Let's Go to [Github](https://github.com/) to learn!

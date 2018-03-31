@@ -10,8 +10,14 @@ let regexItalicUnderscore = /([\s\S]*)(\_)([^\_\s])(.+)([^\_\s])(\_)([^\_])([\s\
 let regexLink  = /([\s\S]*)([^\!])(\[)(.*)(\]\()(.*)(\))([\s\S]*)/;
 // Images
 let regexImage = /([\s\S]*)([\!])(\[)(.*)(\]\()(.*)(\))([\s\S]*)/;
+
+
+
 // Blockquotes
-let regexBlockquote = /(\s*)(\>)(.*)/;
+let regexBlockquote = /([\s\S]*)(\n\s*)(\>)((.+)([\n]{0,1})(.+))*([\s\S]*)/;
+
+
+
 // Code Blocks
 let regexCode = /([\s\S]*)(\`)(.*)(\`)([\s\S]*)/;
 let regexCodeBlockBackQuote = /([\s\S]*)(\`\`\`)([\s\S]*)(\`\`\`)([\s\S]*)/;
