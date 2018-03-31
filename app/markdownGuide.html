@@ -13,6 +13,9 @@
             let config = new Config();
             const f1 = 112;
 
+            const _ = require('./i18n/_i18n');
+            function __(key) {document.write(_(key));}
+
             changeTheme(config.get('theme'));
 
             window.onload = function() {
@@ -47,150 +50,150 @@
             }, false);
         </script>
 
-        <center><h1>Your Guide to Markdown</h1></center>
-        <div><center>
-            <a href="https://daringfireball.net/projects/markdown/" title="The official website of the Markdown language">Markdown</a>
-            is a markup language designed to be legible and easy to convert to HTML.
-            The Markfast editor is currently using the <a href="http://spec.commonmark.org/0.28/" title="CommonMark Spec Version 0.28">CommonMark Spec v0.28</a>.
-            The following is a guide to Markdown's syntax.
-        </center></div>
+        <center><h1><script>__('mdg::header')</script></h1></center>
+        <div><center><script>__('mdg::desc')</script></center></div>
         <hr/>
-        <h2 id="toc">Table of Contents</h2>
+        <h2 id="toc"><script>__('mdg::toc')</script></h2>
         <ul>
-            <li><a href="#inline-html">Inline HTML</a></li>
-            <li><a href="#headings">Headings</a></li>
-            <li><a href="#emphasis">Emphasis</a></li>
-            <li><a href="#lists">Lists</a></li>
-            <li><a href="#links">Links</a></li>
-            <li><a href="#images">Images</a></li>
+            <li><a href="#inline-html"><script>__('mdg::inlineHTML')</script></a></li>
+            <li><a href="#headings"><script>__('mdg::headings')</script></a></li>
+            <li><a href="#emphasis"><script>__('mdg::emphasis')</script></a></li>
+            <li><a href="#lists"><script>__('mdg::lists')</script></a></li>
+            <li><a href="#links"><script>__('mdg::links')</script></a></li>
+            <li><a href="#images"><script>__('mdg::images')</script></a></li>
         </ul>
         <hr/>
         <!-- INLINE HTML -->
-        <h2 id="inline-html">Inline HTML</h2>
-        <div>
+        <h2 id="inline-html"><script>__('mdg::inlineHTML')</script></h2>
+        <!-- <div>
             Inline HTML tags are parsed as HTML, meaning they can be used to structure a Markdown document.
             For instance, to format some text as inline code, you could use Markdown's native method of
             placing a backtick at each end of the inline code, or you could wrap the inline code in <code>&lt;code&gt;</code> tags.
-        </div>
+        </div> -->
+        <div><script>__('mdg::inlineHTML::desc')</script></div>
         <br/>
         <table style="width: 100%; font-size: smaller;">
             <tr>
-                <th>Markdown</th>
-                <th>Presentation</th>
-                <th>Hotkeys</th>
+                <th><script>__('mdg::markdown')</script></th>
+                <th><script>__('mdg::presentation')</script></th>
+                <th><script>__('mdg::hotkeys')</script></th>
             </tr>
             <tr>
-                <td><pre><code class="lang-md">`Inline code`</td>
-                <td><code>Inline code</code></td>
+                <td><pre><code class="lang-md">`<script>__('mdg::inlineHTML::sample')</script>`</td>
+                <td><code><script>__('mdg::inlineHTML::sample')</script></code></td>
                 <td></td>
             </tr>
             <tr>
-                <td><pre><code class="lang-html">&lt;code&gt;Inline code&lt;/code&gt;</td>
-                <td><code>Inline code</code></td>
+                <td><pre><code class="lang-html">&lt;code&gt;<script>__('mdg::inlineHTML::sample')</script>&lt;/code&gt;</td>
+                <td><code><script>__('mdg::inlineHTML::sample')</script></code></td>
                 <td></td>
             </tr>
         </table>
         <hr/>
         <!-- HEADINGS -->
-        <h2 id="headings">Headings</h2>
-        <div>
+        <h2 id="headings"><script>__('mdg::headings')</script></h2>
+        <!-- <div>
             To use HTML <code>h1</code>-<code>h6</code> headings, use pound signs at the start of the line.
             For instance, use <code>#</code> for <code>h1</code>, <code>##</code> for <code>h2</code>,
             and so forth up to <code>######</code> for <code>h6</code>.
+        </div> -->
+        <div>
+            <script>__('mdg::headings::desc')</script>
         </div>
         <br/>
         <table style="width: 100%; font-size: smaller;">
             <thead>
-                <th>Markdown</th>
-                <th>Presentation</th>
-                <th>Hotkeys</th>
+                <th><script>__('mdg::markdown')</script></th>
+                <th><script>__('mdg::presentation')</script></th>
+                <th><script>__('mdg::hotkeys')</script></th>
             </thead>
             <tr>
-                <td><pre><code class="lang-md"># Heading 1</td>
-                <td><h1 style="font-size: 125%;">Heading 1</h1></td>
+                <td><pre><code class="lang-md"># <script>__('mdg::headings::sample::1')</script></td>
+                <td><h1 style="font-size: 125%;"><script>__('mdg::headings::sample::1')</script></h1></td>
                 <td><kbd><script>document.write(config.get('cmdorctrl'))</script>1</kbd></td>
             </tr>
             <tr>
-                <td><pre><code class="lang-md">## Heading 2</td>
-                <td><h2 style="font-size: 115%;">Heading 2</h2></td>
+                <td><pre><code class="lang-md">## <script>__('mdg::headings::sample::2')</script></td>
+                <td><h2 style="font-size: 115%;"><script>__('mdg::headings::sample::2')</script></h2></td>
                 <td></td>
             </tr>
             <tr>
-                <td><pre><code class="lang-md">### Heading 3</td>
-                <td><h3 style="font-size: 105%;">Heading 3</h3></td>
+                <td><pre><code class="lang-md">### <script>__('mdg::headings::sample::3')</script></td>
+                <td><h3 style="font-size: 105%;"><script>__('mdg::headings::sample::3')</script></h3></td>
                 <td></td>
             </tr>
             <tr>
-                <td><pre><code class="lang-md">#### Heading 4</td>
-                <td><h4 style="font-size: 95%;">Heading 4</h4></td>
+                <td><pre><code class="lang-md">#### <script>__('mdg::headings::sample::4')</script></td>
+                <td><h4 style="font-size: 95%;"><script>__('mdg::headings::sample::4')</script></h4></td>
                 <td></td>
             </tr>
             <tr>
-                <td><pre><code class="lang-md">##### Heading 5</td>
-                <td><h5 style="font-size: 85%;">Heading 5</h5></td>
+                <td><pre><code class="lang-md">##### <script>__('mdg::headings::sample::5')</script></td>
+                <td><h5 style="font-size: 85%;"><script>__('mdg::headings::sample::5')</script></h5></td>
                 <td></td>
             </tr>
             <tr>
-                <td><pre><code class="lang-md">###### Heading 6</td>
-                <td><h6 style="font-size: 75%;">Heading 6</h6></td>
+                <td><pre><code class="lang-md">###### <script>__('mdg::headings::sample::6')</script></td>
+                <td><h6 style="font-size: 75%;"><script>__('mdg::headings::sample::6')</script></h6></td>
                 <td></td>
             </tr>
         </table>
         <hr/>
         <!-- EMPHASIS -->
-        <h2 id="emphasis">Emphasis</h2>
-        <div>
+        <h2 id="emphasis"><script>__('mdg::emphasis')</script></h2>
+        <!-- <div>
             Markdown supports bolding, italicizing, and strikethrough.
             Any of these can be used in tandem with each other.
-        </div>
+        </div> -->
+        <div><script>__('mdg::emphasis::desc')</script></div>
         <br/>
         <table style="width: 100%; font-size: smaller;">
             <thead>
-                <th>Markdown</th>
-                <th>Presentation</th>
-                <th>Hotkeys</th>
+                <th><script>__('mdg::markdown')</script></th>
+                <th><script>__('mdg::presentation')</script></th>
+                <th><script>__('mdg::hotkeys')</script></th>
             </thead>
             <tr>
                 <td>
-                    <pre><code class="lang-md">**This is bold.**</code></pre>
-                    <pre><code class="lang-md">__This is also bold.__</code></pre>
+                    <pre><code class="lang-md">**<script>__('mdg::emphasis::sample::bold::1')</script>**</code></pre>
+                    <pre><code class="lang-md">__<script>__('mdg::emphasis::sample::bold::2')</script>__</code></pre>
                 </td>
                 <td><strong>
-                    This is bold.<br/>
-                    This is also bold.
+                    <script>__('mdg::emphasis::sample::bold::1')</script><br/>
+                    <script>__('mdg::emphasis::sample::bold::2')</script>
                 </strong></td>
                 <td><kbd><script>document.write(config.get('cmdorctrl'))</script>B</kbd></td>
             </tr>
             <tr>
                 <td>
-                    <pre><code class="lang-md">*This is italicized.*</code></pre>
-                    <pre><code class="lang-md">_This is also italicized._</code></pre>
+                    <pre><code class="lang-md">*<script>__('mdg::emphasis::sample::italics::1')</script>*</code></pre>
+                    <pre><code class="lang-md">_<script>__('mdg::emphasis::sample::italics::2')</script>_</code></pre>
                 </td>
                 <td><em>
-                    This is italicized.<br/>
-                    This is also italicized.
+                    <script>__('mdg::emphasis::sample::italics::1')</script><br/>
+                    <script>__('mdg::emphasis::sample::italics::2')</script>
                 </em></td>
                 <td><kbd><script>document.write(config.get('cmdorctrl'))</script>I</kbd></td>
             </tr>
             <tr>
                 <td>
-                    <pre><code class="lang-md">~~This is struck through.~~</code></pre>
+                    <pre><code class="lang-md">~~<script>__('mdg::emphasis::sample::strike')</script>~~</code></pre>
                 </td>
                 <td><strike>
-                    This is struck through.
+                    <script>__('mdg::emphasis::sample::strike')</script>
                 </strike></td>
                 <td></td>
             </tr>
         </table>
         <hr/>
         <!-- LISTS -->
-        <h2 id="lists">Lists</h2>
+        <h2 id="lists"><script>__('mdg::lists')</script></h2>
         <hr/>
         <!-- LINKS -->
-        <h2 id="links">Links</h2>
+        <h2 id="links"><script>__('mdg::links')</script></h2>
         <hr/>
         <!-- IMAGES -->
-        <h2 id="images">Images</h2>
+        <h2 id="images"><script>__('mdg::images')</script></h2>
         <hr/>
     </body>
 </html>
