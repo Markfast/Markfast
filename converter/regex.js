@@ -7,7 +7,7 @@ let regexBoldUnderscore = /([\s\S]*)(\_\_)(\S)(.+)(\S)(\_\_)([\s\S]*)/;
 let regexItalicAsterisk   = /([\s\S]*)(\*)([^\*\s])(.+)([^\*\s])(\*)([^\*])([\s\S]*)/;
 let regexItalicUnderscore = /([\s\S]*)(\_)([^\_\s])(.+)([^\_\s])(\_)([^\_])([\s\S]*)/;
 // Links
-let regexLink  = /([\s\S]*)([^\!])(\[)(.*)(\]\()(.*)(\))([\s\S]*)/;
+let regexLink  = /([\s\S]*)([^\!])(\[)(.*)(\]\()(.*?)(\))([\s\S]*)/;
 // Images
 let regexImage = /([\s\S]*)([\!])(\[)(.*)(\]\()(.*)(\))([\s\S]*)/;
 // Blockquotes
