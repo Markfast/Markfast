@@ -1,6 +1,7 @@
 let isUrl = require('is-url');
 
 let converter = {};
+converter.TEST_MODE = false;
 converter.breakTag = "<br />";
 converter.backslashCharacters = {
     "\\":"UTOPHER005C",

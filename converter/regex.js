@@ -19,7 +19,7 @@ let regexCodeBlockTilde = /([\s\S]*)(\~\~\~\~)([\s\S]*)(\~\~\~\~)([\s\S]*)/;
 // Headers
 let regexHeader = /([\s\S]*)(\n\s*)(\#+)(.*)([\s\S]*)/;
 // Br Headers
-let regexNewLineSingle = /([\S\s]+)(\n|\r)([\S\s]+)/;
-let regexNewLineMultiple = /([\S\s]+)(\n|\r)(\n+|\r+)([\S\s]+)/;
+let regexNewLineSingle = /([\S\s]*)(\n|\r)([\S\s]*)/;
+let regexNewLineMultiple = /([\S]*)(\n|\r)(\n+|\r+)([\S\s]*)/;
 // List
 let regexList = /(\s*)((\-)|(\*)|([0-9]\.))(.*)/;
