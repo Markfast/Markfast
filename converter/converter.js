@@ -1,5 +1,10 @@
 let isUrl = require('is-url');
 
+// Becuase Topher is use to Python
+let print = function (paramerter) {
+    console.log(paramerter);
+}
+
 let converter = {};
 converter.TEST_MODE = false;
 converter.breakTag = "<br />";
@@ -100,7 +105,9 @@ converter.convertToHTML = function(markdown, dir) {
     return this.replaceAllTopherUnicodes(htmlElement)
 }
 
+// ============================================================================
 // Parse Functions
+// ============================================================================
 converter.parseBullets = function (string) {
     let lines = string.split("\n"),
         returnString = "",
@@ -158,7 +165,9 @@ converter.getLineObject = function (line) {
     return {"type": false, "height": spaces, "line": line};
 }
 
+// ============================================================================
 // Topher's Unicode
+// ============================================================================
 converter.convertBackslashToTopherUnicode = function (character) {
     if (character in this.backslashCharacters) return this.backslashCharacters[character];
     else return this.backslashCharacters["\\"] + character;
@@ -169,8 +178,4 @@ converter.replaceAllTopherUnicodes = function (string) {
         string = string.replaceAll(value, key);
     }
     return string;
-}
-
-converter.appendHTMLElement = function (htmlElement) {
-    document.getElementById("test").innerHTML += htmlElement;
 }
